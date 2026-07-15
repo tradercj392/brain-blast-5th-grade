@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0D1640"/>
+<title>Brain Blast! 🚀</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{
+  background:radial-gradient(ellipse at top,#1B2A6B 0%,#0D1640 45%,#070B26 100%);
+  background-attachment:fixed;min-height:100vh;
+  font-family:"Nunito","Arial",sans-serif;overflow-x:hidden;color:#1A0A3E;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.5) 0, transparent 50%),
+                    radial-gradient(2px 2px at 70% 65%, rgba(255,255,255,.4) 0, transparent 50%),
+                    radial-gradient(1.5px 1.5px at 40% 80%, rgba(255,255,255,.3) 0, transparent 50%),
+                    radial-gradient(1.5px 1.5px at 85% 20%, rgba(255,255,255,.3) 0, transparent 50%),
+                    radial-gradient(1.5px 1.5px at 10% 60%, rgba(255,255,255,.35) 0, transparent 50%);
+  background-size:100% 100%;
+}
+#app{min-height:100vh;display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;}
+.screen{width:100%;max-width:460px;padding:14px;margin:0 auto;position:relative;}
+.apptitle{font-family:"Luckiest Guy","Arial Black",sans-serif;font-size:32px;letter-spacing:2px;color:#FFD93D;text-align:center;text-shadow:0 3px 0 rgba(0,0,0,.3);}
+.statsbar{display:flex;justify-content:center;gap:10px;margin-top:10px;}
+.statpill{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:20px;padding:6px 16px;font-family:"Luckiest Guy",sans-serif;font-size:15px;letter-spacing:1px;}
+.card{background:#fff;border-radius:22px;padding:16px;box-shadow:0 8px 28px rgba(0,0,0,.35);position:relative;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.g2col{display:flex;flex-direction:column;gap:10px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.btn{display:block;width:100%;padding:14px 16px;border:none;border-radius:16px;font-family:"Luckiest Guy",sans-serif;font-size:20px;letter-spacing:1.5px;cursor:pointer;text-align:center;transition:transform .1s;}
+.btn:active{transform:scale(.95);}
+.bp{background:linear-gradient(135deg,#6C3FC8,#9B6FE8);color:#fff;box-shadow:0 6px 18px rgba(108,63,200,.5);}
+.bg2{background:rgba(255,255,255,.85);color:#4A3E7A;border:2px solid rgba(108,63,200,.25);}
+.subjbtn{border:none;border-radius:22px;padding:22px 10px;color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;box-shadow:0 8px 22px rgba(0,0,0,.35);}
+.subjlabel{font-family:"Luckiest Guy",sans-serif;font-size:18px;letter-spacing:1px;}
+.arcadehome{background:linear-gradient(135deg,#FF8C00,#FF4757);color:#fff;box-shadow:0 6px 20px rgba(255,71,87,.4);}
+.backbtn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:12px;padding:8px 16px;font-family:"Luckiest Guy",sans-serif;font-size:14px;letter-spacing:1px;cursor:pointer;margin-bottom:12px;}
+.cathead{color:#fff;text-align:center;border-radius:18px;padding:16px;font-family:"Luckiest Guy",sans-serif;font-size:26px;letter-spacing:1.5px;margin-bottom:16px;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+.tierblock{margin-bottom:16px;}
+.tierblock.locked{opacity:.45;}
+.tiertitle{color:#fff;font-family:"Luckiest Guy",sans-serif;font-size:15px;letter-spacing:1px;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.badge{font-family:"Nunito",sans-serif;font-weight:900;font-size:10px;letter-spacing:.5px;border-radius:10px;padding:3px 9px;white-space:nowrap;}
+.badge.review{background:rgba(255,255,255,.18);color:#BFE8FF;}
+.badge.new{background:linear-gradient(135deg,#FFD93D,#FF8C00);color:#3A1E00;}
+.gametile{background:#fff;border:none;border-radius:16px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;position:relative;box-shadow:0 4px 14px rgba(0,0,0,.25);}
+.gametile:disabled{cursor:not-allowed;}
+.gtlabel{font-family:"Nunito",sans-serif;font-weight:800;font-size:11px;text-align:center;color:#2D1566;line-height:1.2;}
+.donecheck{position:absolute;top:4px;right:4px;font-size:13px;}
+.playhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.quitbtn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:12px;padding:7px 12px;font-family:"Luckiest Guy",sans-serif;font-size:13px;cursor:pointer;}
+.playtitle{color:#fff;font-family:"Luckiest Guy",sans-serif;font-size:15px;letter-spacing:1px;}
+.pw{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.pb{flex:1;height:10px;background:#eee;border-radius:10px;overflow:hidden;}
+.pf{height:100%;background:linear-gradient(90deg,#FFD93D,#FF8C00);border-radius:10px;transition:width .3s ease;}
+.ps{font-family:"Luckiest Guy",sans-serif;font-size:16px;color:#E07000;white-space:nowrap;}
+.nova{display:flex;align-items:center;gap:8px;margin-bottom:10px;background:#F5F3FF;border-radius:14px;padding:8px 12px;}
+.nova-face{font-size:26px;}
+.nova-bubble{font-family:"Nunito",sans-serif;font-weight:800;font-size:13px;color:#5A4A8A;}
+.qtext{font-family:"Nunito",sans-serif;font-weight:800;font-size:17px;color:#1A0A3E;text-align:center;line-height:1.45;margin-bottom:14px;background:#F7F5FF;border-radius:14px;padding:14px;}
+.blank{display:inline-block;min-width:80px;border-bottom:3px solid #FF8C00;text-align:center;font-weight:900;color:#FF8C00;margin:0 4px;}
+.passage{font-family:"Georgia",serif;font-size:15px;line-height:1.6;color:#3A2E5A;background:#FFF8F0;border-radius:14px;padding:14px;margin-bottom:12px;}
+.ab{padding:14px 8px;border:2px solid #E0DCF0;border-radius:14px;font-family:"Nunito",sans-serif;font-weight:800;font-size:14px;cursor:pointer;text-align:center;background:#F8F8FC;color:#1A0A3E;min-height:54px;}
+.ab.ok{background:#E8FFF4;border-color:#00D68F;color:#00A86B;}
+.ab.no{background:#FFF0F2;border-color:#FF4757;color:#CC2F3E;}
+.ab.dm{background:#F0F0F0;border-color:#ddd;color:#aaa;}
+.tfbtn{flex:1;padding:16px 8px;border-radius:16px;border:2px solid #E0DCF0;background:#fff;font-family:"Luckiest Guy",sans-serif;font-size:19px;color:#1A0A3E;cursor:pointer;}
+.fbwrap{text-align:center;margin-top:12px;}
+.fbtxt{font-family:"Luckiest Guy",sans-serif;font-size:19px;letter-spacing:1px;}
+.fbtxt.ok{color:#00D68F;}
+.fbtxt.no{color:#FF4757;}
+.fbtxt.no span{color:#1A0A3E;font-family:"Nunito",sans-serif;}
+.fbexpl{font-family:"Nunito",sans-serif;font-size:12px;color:#8A7FA8;margin-top:4px;}
+.nextbtn{width:100%;padding:12px;}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:34px;margin-bottom:8px;}
+.chip{background:#fff;border:2px solid #DDD3F5;border-radius:14px;padding:8px 12px;font-family:"Nunito",sans-serif;font-weight:800;font-size:13px;cursor:pointer;color:#1A0A3E;}
+.chip.sel{background:#2D1566;color:#fff;}
+.chip.placed{opacity:.85;}
+.chip.right{background:#E8FFF4;border-color:#00D68F;color:#00A86B;}
+.chip.wrong{background:#FFF0F2;border-color:#FF4757;color:#CC2F3E;}
+.bucket{flex:1;border-radius:16px;padding:10px 6px 14px;min-height:90px;border:2px solid #ddd;background:#FAFAFF;cursor:pointer;}
+.bhead{font-family:"Luckiest Guy",sans-serif;font-size:12px;text-align:center;margin-bottom:6px;color:#6C3FC8;}
+.scram-slots{display:flex;justify-content:center;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.scram-pool{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;}
+.tile{width:38px;height:44px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:"Nunito",sans-serif;font-weight:900;font-size:18px;}
+.tile.filled{background:linear-gradient(135deg,#00D68F,#00E5A0);color:#fff;}
+.tile.empty{background:rgba(0,0,0,.06);border:2px dashed rgba(0,0,0,.15);}
+.tile.pool{background:linear-gradient(135deg,#6C3FC8,#9B6FE8);color:#fff;border:none;cursor:pointer;}
+.matchgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;}
+.matchgrid.small{grid-template-columns:repeat(4,1fr);}
+.matchcard{aspect-ratio:1;border-radius:10px;background:linear-gradient(135deg,#6C3FC8,#9B6FE8);border:none;color:transparent;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:2px;}
+.matchcard.flip{background:#fff;border:2px solid #DDD3F5;color:#1A0A3E;font-size:9px;font-weight:800;font-family:"Nunito",sans-serif;text-align:center;}
+.matchcard.found{background:#E8FFF4;border:2px solid #00D68F;color:#00A86B;}
+.unlockbanner{background:linear-gradient(135deg,#FFD93D,#FF8C00);color:#1A0A3E;font-family:"Nunito",sans-serif;font-weight:900;font-size:13px;border-radius:14px;padding:10px;margin-top:14px;}
+.arcadetile{border:none;border-radius:20px;padding:18px 8px;color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 6px 18px rgba(0,0,0,.3);}
+.arcadedesc{font-family:"Nunito",sans-serif;font-size:10px;color:rgba(255,255,255,.9);text-align:center;}
+.arcadewrap{display:flex;justify-content:center;}
+#meteor-canvas{border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.4);touch-action:none;max-width:100%;}
+.blitzbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.timerpill{background:#FFF0E0;color:#FF8C00;font-family:"Luckiest Guy",sans-serif;font-size:15px;border-radius:12px;padding:4px 12px;}
+.patterngrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:260px;margin:0 auto;}
+.patterntile{aspect-ratio:1;border:none;border-radius:20px;font-size:42px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);transition:transform .1s;}
+.patterntile:active{transform:scale(.92);}
+.wc-circle{position:relative;width:230px;height:230px;margin:14px auto;touch-action:none;}
+.wc-letter{position:absolute;width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#6C3FC8,#9B6FE8);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Luckiest Guy",sans-serif;font-size:22px;transform:translate(-50%,-50%);cursor:pointer;user-select:none;touch-action:none;box-shadow:0 4px 10px rgba(0,0,0,.3);}
+.wc-letter.active{background:linear-gradient(135deg,#FFD93D,#FF8C00);color:#1A0A3E;}
+.wc-word{text-align:center;font-family:"Luckiest Guy",sans-serif;font-size:26px;letter-spacing:3px;color:#1A0A3E;min-height:34px;margin-bottom:2px;}
+.wc-word.ok{color:#00D68F;}
+.wc-word.no{color:#FF4757;}
+.wc-word.dupe{color:#FF8C00;}
+.wc-found{text-align:center;font-family:"Nunito",sans-serif;font-weight:800;font-size:13px;color:#7A6FA0;margin-top:4px;}
+@keyframes confettiSpin{0%{transform:translateY(0) rotate(0);opacity:1;}100%{transform:translateY(340px) rotate(540deg);opacity:0;}}
+@media (min-width:500px){.matchgrid{grid-template-columns:repeat(4,1fr);}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const VOCAB = [
+ {w:"Abundant",d:"Existing in large quantities; plentiful",wrong:["Scarce and hard to find","Extremely tiny","Broken beyond repair"]},
+ {w:"Hesitant",d:"Slow to act because of uncertainty",wrong:["Extremely confident","Very loud and bold","Completely finished"]},
+ {w:"Peculiar",d:"Strange or unusual",wrong:["Perfectly normal","Very expensive","Highly organized"]},
+ {w:"Diligent",d:"Showing careful, persistent effort",wrong:["Lazy and careless","Angry and upset","Confused and lost"]},
+ {w:"Fragile",d:"Easily broken or damaged",wrong:["Extremely strong","Very colorful","Impossible to lose"]},
+ {w:"Generous",d:"Willing to give more than expected",wrong:["Selfish and stingy","Quiet and shy","Fast and athletic"]},
+ {w:"Reluctant",d:"Unwilling and hesitant",wrong:["Eager and excited","Tired and sleepy","Proud and boastful"]},
+ {w:"Vivid",d:"Producing strong, clear images in the mind",wrong:["Dull and boring","Small and quiet","Old and broken"]},
+ {w:"Cautious",d:"Careful to avoid danger or mistakes",wrong:["Reckless and careless","Cheerful and silly","Sleepy and slow"]},
+ {w:"Enormous",d:"Extremely large in size",wrong:["Extremely tiny","Perfectly average","Slightly bent"]},
+ {w:"Furious",d:"Extremely angry",wrong:["Extremely happy","Very sleepy","Mildly curious"]},
+ {w:"Gloomy",d:"Dark, dismal, or lacking hope",wrong:["Bright and cheerful","Loud and noisy","Fast-moving"]},
+ {w:"Magnificent",d:"Impressively beautiful or grand",wrong:["Plain and ordinary","Small and cramped","Old and rusty"]},
+ {w:"Mysterious",d:"Difficult to understand or explain",wrong:["Perfectly clear","Very predictable","Extremely simple"]},
+ {w:"Obedient",d:"Willing to do what one is told",wrong:["Rebellious and defiant","Talkative and loud","Forgetful and careless"]},
+ {w:"Occasional",d:"Happening now and then, not often",wrong:["Happening constantly","Never happening","Happening once ever"]},
+ {w:"Restless",d:"Unable to stay still or relaxed",wrong:["Perfectly calm","Fast asleep","Extremely organized"]},
+ {w:"Persuade",d:"To convince someone to do or believe something",wrong:["To ignore completely","To measure exactly","To forget entirely"]},
+ {w:"Tranquil",d:"Calm and peaceful",wrong:["Chaotic and loud","Fast and dangerous","Bright and flashy"]},
+ {w:"Ancient",d:"Belonging to the very distant past",wrong:["Brand new","Made of metal","Extremely small"]},
+ {w:"Bewildered",d:"Confused or puzzled",wrong:["Completely certain","Extremely relaxed","Very organized"]},
+ {w:"Courteous",d:"Polite and considerate",wrong:["Rude and dismissive","Loud and boastful","Nervous and shy"]},
+];
+
+const IDIOMS = [
+ {i:"Break the ice",m:"To do or say something that eases tension",wrong:["To literally shatter frozen water","To end a friendship suddenly","To win a competition"]},
+ {i:"Piece of cake",m:"Something very easy to do",wrong:["A delicious dessert recipe","A difficult challenge","A small mistake"]},
+ {i:"Hit the books",m:"To study hard",wrong:["To throw books around","To read for fun only","To organize a bookshelf"]},
+ {i:"Under the weather",m:"Feeling sick or unwell",wrong:["Standing outside in the rain","Feeling extremely happy","Talking about the weather"]},
+ {i:"Cost an arm and a leg",m:"To be very expensive",wrong:["To cause an injury","To be completely free","To take a long time"]},
+ {i:"Once in a blue moon",m:"Something that rarely happens",wrong:["Something that happens every night","A type of eclipse","Something that happens every month"]},
+ {i:"Let the cat out of the bag",m:"To accidentally reveal a secret",wrong:["To release a pet outside","To lose something important","To start a new plan"]},
+ {i:"Bite off more than you can chew",m:"To take on more than you can handle",wrong:["To eat too quickly","To skip a meal","To finish a task early"]},
+ {i:"The ball is in your court",m:"It's your turn to take action",wrong:["You are losing a game","You must apologize","The game has ended"]},
+ {i:"Add fuel to the fire",m:"To make a bad situation worse",wrong:["To calm a situation down","To cook something outdoors","To start a campfire"]},
+ {i:"Actions speak louder than words",m:"What you do matters more than what you say",wrong:["Loud people are more honest","Talking is more important than acting","Silence is the best response"]},
+ {i:"Burning the midnight oil",m:"Working late into the night",wrong:["Wasting energy carelessly","Cooking a late dinner","Starting a fire accidentally"]},
+];
+
+const GRAMMAR_TF = [
+ {s:"A noun is a person, place, thing, or idea.",a:true,e:"Correct — nouns name people, places, things, or ideas."},
+ {s:"An adverb always describes a noun.",a:false,e:"Adjectives describe nouns; adverbs describe verbs, adjectives, or other adverbs."},
+ {s:"'Quickly' is an example of an adverb.",a:true,e:"Yes — it ends in -ly and describes how an action happens."},
+ {s:"A simile compares two things using 'like' or 'as'.",a:true,e:"Correct — 'brave as a lion' is a simile."},
+ {s:"A metaphor uses 'like' or 'as' to compare things.",a:false,e:"A metaphor says one thing IS another, without 'like' or 'as'."},
+ {s:"The subject of a sentence is always the first word.",a:false,e:"The subject can appear anywhere, though it's often early in the sentence."},
+ {s:"A complete sentence needs a subject and a verb.",a:true,e:"Correct — every complete sentence needs both."},
+ {s:"'Run', 'jump', and 'sing' are all verbs.",a:true,e:"Yes, they all show action."},
+ {s:"A proper noun should always be capitalized.",a:true,e:"Correct — proper nouns name specific people, places, or things."},
+ {s:"An antonym is a word that means the same as another word.",a:false,e:"That describes a synonym; an antonym means the opposite."},
+ {s:"'Happy' and 'joyful' are synonyms.",a:true,e:"Correct — they have similar meanings."},
+ {s:"A prefix is added to the end of a word.",a:false,e:"A prefix goes at the beginning; a suffix goes at the end."},
+ {s:"The suffix '-less' means 'without'.",a:true,e:"Correct — like 'fearless' means 'without fear'."},
+ {s:"Personification gives human qualities to non-human things.",a:true,e:"Correct — like 'the wind whispered'."},
+ {s:"An exclamation point ends every type of sentence.",a:false,e:"Exclamation points show strong emotion; not every sentence needs one."},
+];
+
+const CONTEXT_FILL = [
+ {s:"After running the marathon, Jasmine felt completely ___ and needed to rest.",a:"exhausted",c:["exhausted","curious","organized","confused"]},
+ {s:"The detective searched for ___ to solve the mysterious case.",a:"clues",c:["clues","opinions","recipes","apologies"]},
+ {s:"Because the bridge looked ___, engineers closed it for repairs.",a:"unstable",c:["unstable","colorful","expensive","ancient"]},
+ {s:"The scientist's theory was ___ by new evidence from the experiment.",a:"supported",c:["supported","ignored","forgotten","painted"]},
+ {s:"Her ___ smile made everyone in the room feel welcome.",a:"warm",c:["warm","distant","confusing","silent"]},
+ {s:"The old castle had stood for centuries, its walls ___ but still standing strong.",a:"weathered",c:["weathered","invisible","tiny","modern"]},
+ {s:"The crowd grew ___ as they waited for the results of the competition.",a:"anxious",c:["anxious","bored","careless","sleepy"]},
+ {s:"Recycling helps ___ the amount of waste sent to landfills.",a:"reduce",c:["reduce","increase","ignore","celebrate"]},
+ {s:"The explorer's journal described the ___ landscape of towering mountains and deep valleys.",a:"dramatic",c:["dramatic","boring","flat","tiny"]},
+ {s:"Even though he was nervous, the student gave a ___ presentation.",a:"confident",c:["confident","silent","messy","short"]},
+ {s:"The recipe called for a ___ amount of salt — just a small pinch.",a:"minimal",c:["minimal","enormous","unlimited","dangerous"]},
+ {s:"Scientists must ___ their data carefully before drawing conclusions.",a:"analyze",c:["analyze","destroy","invent","hide"]},
+];
+
+const CATSORT_READING = [
+ {categoryA:"Synonyms for 'Happy' 😊",categoryB:"Antonyms for 'Happy' 😔",wordsA:["Joyful","Cheerful","Delighted","Content"],wordsB:["Miserable","Gloomy","Sorrowful","Upset"]},
+ {categoryA:"Nouns 📦",categoryB:"Verbs ⚡",wordsA:["Mountain","Freedom","Teacher","Bicycle"],wordsB:["Sprint","Whisper","Analyze","Construct"]},
+ {categoryA:"Synonyms for 'Difficult' 💪",categoryB:"Synonyms for 'Easy' ✨",wordsA:["Challenging","Complex","Demanding","Tough"],wordsB:["Simple","Effortless","Basic","Straightforward"]},
+ {categoryA:"Adjectives 🎨",categoryB:"Adverbs 🏃",wordsA:["Enormous","Vivid","Ancient","Fragile"],wordsB:["Quickly","Carefully","Loudly","Rarely"]},
+ {categoryA:"Synonyms for 'Angry' 😠",categoryB:"Synonyms for 'Calm' 😌",wordsA:["Furious","Irritated","Enraged","Annoyed"],wordsB:["Tranquil","Peaceful","Serene","Relaxed"]},
+ {categoryA:"Formal Language 🎩",categoryB:"Informal Language 👋",wordsA:["Greetings","Request","Assistance","Depart"],wordsB:["Hey","Gonna","Yeah","Bye"]},
+];
+
+const SCRAMBLE_WORDS = [
+ {word:"triumph",hint:"A great victory or success"},
+ {word:"glisten",hint:"To shine with a sparkling light"},
+ {word:"stubborn",hint:"Refusing to change one's mind"},
+ {word:"drought",hint:"A long period without rain"},
+ {word:"treasure",hint:"A collection of valuable things"},
+ {word:"whisper",hint:"To speak very softly"},
+ {word:"journey",hint:"A long trip from one place to another"},
+ {word:"courage",hint:"The ability to face fear or danger"},
+ {word:"mystery",hint:"Something that is hard to explain"},
+ {word:"anxious",hint:"Feeling worried or nervous"},
+ {word:"fortune",hint:"Wealth, luck, or fate"},
+ {word:"harvest",hint:"To gather crops that are ripe"},
+];
+
+const COMPREHENSION = [
+ {p:"Maria had practiced her violin every day for three months before the recital. When she walked onto the stage, her hands trembled slightly, but as soon as she began to play, all her nerves melted away. The audience applauded loudly when she finished.",
+  q:"Why did Maria's nerves melt away?",
+  a:"She had practiced enough to feel confident once she started playing",
+  c:["She had practiced enough to feel confident once she started playing","She forgot she was on stage","The audience left the room","She decided not to play"]},
+ {p:"The Amazon Rainforest produces about 20% of the world's oxygen and is home to millions of species of plants and animals. Scientists call it the 'lungs of the Earth' because of how much carbon dioxide it absorbs. Unfortunately, deforestation threatens this vital ecosystem.",
+  q:"Why do scientists call the Amazon the 'lungs of the Earth'?",
+  a:"Because it absorbs huge amounts of carbon dioxide and produces oxygen",
+  c:["Because it absorbs huge amounts of carbon dioxide and produces oxygen","Because it is shaped like lungs","Because people breathe there","Because it has no animals"]},
+ {p:"Before refrigerators existed, people used iceboxes to keep food cold. Large blocks of ice were cut from frozen lakes in the winter and stored in ice houses, insulated with sawdust to keep them from melting through summer.",
+  q:"What was sawdust used for?",
+  a:"To insulate the ice and slow down melting",
+  c:["To insulate the ice and slow down melting","To make the ice taste better","To clean the icebox","To help cut the ice"]},
+ {p:"When Marcus missed the game-winning shot, he felt embarrassed in front of his teammates. But his coach reminded him that even professional athletes miss shots, and what mattered was how he responded. The next practice, Marcus arrived early to work on his free throws.",
+  q:"What lesson does this passage suggest?",
+  a:"Mistakes are part of improving, and effort afterward matters",
+  c:["Mistakes are part of improving, and effort afterward matters","Marcus should quit basketball","Coaches are always wrong","Missing shots means you're a bad player"]},
+ {p:"Honeybees communicate the location of food to each other through a movement called the 'waggle dance.' By moving in a figure-eight pattern, a bee can tell other bees the direction and distance to a flower patch.",
+  q:"What does the waggle dance communicate?",
+  a:"The direction and distance to food",
+  c:["The direction and distance to food","A warning about predators","The bee's age","How to build a hive"]},
+ {p:"Ancient Egyptians believed the Nile River's yearly flooding was a gift from the gods. The floodwaters left behind rich, dark soil perfect for growing crops like wheat and barley, which allowed Egyptian civilization to flourish in the desert.",
+  q:"Why was the Nile's flooding important to Egyptians?",
+  a:"It left fertile soil that allowed crops to grow",
+  c:["It left fertile soil that allowed crops to grow","It provided gold for building pyramids","It kept enemies away","It made the desert cooler"]},
+ {p:"Sound travels in waves, and the speed of sound changes depending on the material it moves through. Sound travels faster through water than through air, and even faster through solid materials like steel.",
+  q:"According to the passage, where does sound travel fastest?",
+  a:"Through solid materials like steel",
+  c:["Through solid materials like steel","Through air","Through water","Sound travels the same speed everywhere"]},
+ {p:"During the California Gold Rush of 1849, thousands of people traveled west hoping to strike it rich. While a few found gold, most 'forty-niners' struggled, and many merchants who sold tools and supplies made more money than the miners themselves.",
+  q:"Who often profited the most during the Gold Rush?",
+  a:"Merchants who sold tools and supplies",
+  c:["Merchants who sold tools and supplies","Every miner who searched for gold","The government of California","People who stayed home"]},
+];
+
+const MATH_WORD_PROBLEMS = [
+ {q:"A pizza is cut into 8 equal slices. If Jayden eats 3 slices, what fraction of the pizza is left?",a:"5/8",c:["5/8","3/8","5/3","8/5"]},
+ {q:"Maya has $45.50 and spends $18.75 on a book. How much money does she have left?",a:"$26.75",c:["$26.75","$27.75","$26.25","$63.25"]},
+ {q:"A rectangular garden is 12 feet long and 7 feet wide. What is its area?",a:"84 sq ft",c:["84 sq ft","38 sq ft","19 sq ft","96 sq ft"]},
+ {q:"If a recipe needs 3/4 cup of sugar and you want to make double the recipe, how much sugar do you need?",a:"1 1/2 cups",c:["1 1/2 cups","3/4 cup","1/4 cup","2 1/4 cups"]},
+ {q:"A school has 480 students. If 25% of them ride the bus, how many students ride the bus?",a:"120",c:["120","100","240","96"]},
+ {q:"Tom bikes 8.5 miles on Monday and 6.25 miles on Tuesday. How many total miles did he bike?",a:"14.75 miles",c:["14.75 miles","13.75 miles","14.25 miles","2.25 miles"]},
+ {q:"A movie starts at 6:45 PM and lasts 2 hours 25 minutes. What time does it end?",a:"9:10 PM",c:["9:10 PM","8:70 PM","9:20 PM","8:10 PM"]},
+ {q:"There are 36 students going on a field trip. If each van holds 9 students, how many vans are needed?",a:"4",c:["4","3","5","9"]},
+ {q:"A number is multiplied by 6, then 5 is added, giving a result of 47. What was the original number?",a:"7",c:["7","8","6","9"]},
+ {q:"Solve using order of operations: 8 + 4 × (6 − 2)",a:"24",c:["24","48","20","16"]},
+];
+
+const MATH_TF = [
+ {s:"1/2 is equal to 0.5",a:true,e:"Correct — 1 divided by 2 is 0.5"},
+ {s:"25% is the same as 1/4",a:true,e:"Correct — 25/100 simplifies to 1/4"},
+ {s:"A right angle measures 180 degrees",a:false,e:"A right angle is 90°; 180° is a straight angle"},
+ {s:"Multiplying two negative numbers gives a positive result",a:true,e:"Correct — negative × negative = positive"},
+ {s:"The perimeter of a shape is the space inside it",a:false,e:"That's area — perimeter is the distance around the outside"},
+ {s:"3/4 is greater than 2/3",a:true,e:"Correct — 3/4 = 0.75 and 2/3 ≈ 0.667"},
+ {s:"In order of operations, addition always happens before multiplication",a:false,e:"Multiplication/division come before addition/subtraction (PEMDAS)"},
+ {s:"A triangle's angles always add up to 180 degrees",a:true,e:"Correct — that's a rule of all triangles"},
+ {s:"0.7 is greater than 0.65",a:true,e:"Correct — 0.70 > 0.65"},
+ {s:"An even number can never be a prime number, except 2",a:true,e:"Correct — 2 is the only even prime"},
+];
+
+const SCIENCE_BANKS = {
+ life: [
+  {q:"What is the basic unit of all living things?",a:"Cell",c:["Cell","Atom","Organ","Tissue"],e:"🔬"},
+  {q:"What process do plants use to make food from sunlight?",a:"Photosynthesis",c:["Photosynthesis","Respiration","Digestion","Pollination"],e:"🌱"},
+  {q:"What is a group of organisms interacting with their environment called?",a:"An ecosystem",c:["An ecosystem","A cell","A species","A habitat only"],e:"🌍"},
+  {q:"What do we call an animal that only eats plants?",a:"Herbivore",c:["Herbivore","Carnivore","Omnivore","Producer"],e:"🦌"},
+  {q:"What role do decomposers play in an ecosystem?",a:"They break down dead material and recycle nutrients",c:["They break down dead material and recycle nutrients","They produce their own food from sunlight","They hunt other animals","They control the weather"],e:"🍄"},
+  {q:"What is the term for the transfer of energy from one organism to another through eating?",a:"Food chain",c:["Food chain","Water cycle","Life cycle","Rock cycle"],e:"🔗"},
+  {q:"Which organ pumps blood through your body?",a:"The heart",c:["The heart","The lungs","The stomach","The brain"],e:"❤️"},
+  {q:"What gas do humans breathe in that plants release?",a:"Oxygen",c:["Oxygen","Carbon dioxide","Nitrogen","Hydrogen"],e:"💨"},
+  {q:"What is the largest organ in the human body?",a:"Skin",c:["Skin","Heart","Liver","Brain"],e:"🧴"},
+  {q:"Which system in your body helps fight off germs?",a:"The immune system",c:["The immune system","The skeletal system","The muscular system","The digestive system"],e:"🛡️"},
+  {q:"What do you call an animal's natural place to live?",a:"Habitat",c:["Habitat","Species","Kingdom","Cell"],e:"🏞️"},
+ ],
+ earthspace: [
+  {q:"What causes the Earth to have day and night?",a:"Earth rotating on its axis",c:["Earth rotating on its axis","Earth orbiting the sun","The moon blocking the sun","Clouds covering the sky"],e:"🌗"},
+  {q:"What is the process by which water moves through Earth's systems called?",a:"The water cycle",c:["The water cycle","The rock cycle","The carbon cycle","The food cycle"],e:"💧"},
+  {q:"What type of rock forms from cooled lava or magma?",a:"Igneous rock",c:["Igneous rock","Sedimentary rock","Metamorphic rock","Mineral rock"],e:"🌋"},
+  {q:"What is the closest planet to the sun?",a:"Mercury",c:["Mercury","Venus","Earth","Mars"],e:"☀️"},
+  {q:"What causes the tides in the ocean?",a:"The moon's gravitational pull",c:["The moon's gravitational pull","Strong winds","Ocean currents alone","Boats moving through water"],e:"🌊"},
+  {q:"Which layer of Earth is the hot, molten layer beneath the crust?",a:"The mantle",c:["The mantle","The core","The atmosphere","The crust"],e:"🌍"},
+  {q:"What is a large, rotating storm system with very low pressure called?",a:"A hurricane",c:["A hurricane","A drought","A tsunami","An avalanche"],e:"🌀"},
+  {q:"What natural event happens when tectonic plates suddenly shift?",a:"An earthquake",c:["An earthquake","A tornado","A blizzard","A drought"],e:"🌎"},
+  {q:"What galaxy is our solar system located in?",a:"The Milky Way",c:["The Milky Way","Andromeda","Orion","The Sombrero"],e:"🌌"},
+  {q:"What is the freezing point of water in Celsius?",a:"0°C",c:["0°C","32°C","100°C","-10°C"],e:"❄️"},
+ ],
+ physical: [
+  {q:"What is matter that has a definite shape and volume called?",a:"A solid",c:["A solid","A liquid","A gas","Plasma"],e:"🧊"},
+  {q:"What force pulls objects toward the center of the Earth?",a:"Gravity",c:["Gravity","Friction","Magnetism","Momentum"],e:"🍎"},
+  {q:"What simple machine is a ramp that helps move objects up or down?",a:"An inclined plane",c:["An inclined plane","A lever","A pulley","A wheel and axle"],e:"📐"},
+  {q:"What do we call the resistance that slows down moving objects?",a:"Friction",c:["Friction","Gravity","Energy","Force"],e:"🛞"},
+  {q:"What is the process of a liquid turning into a gas called?",a:"Evaporation",c:["Evaporation","Condensation","Freezing","Melting"],e:"♨️"},
+  {q:"What type of energy is stored energy, like a stretched rubber band?",a:"Potential energy",c:["Potential energy","Kinetic energy","Thermal energy","Sound energy"],e:"🔋"},
+  {q:"What simple machine uses a rope and wheel to lift objects?",a:"A pulley",c:["A pulley","A lever","A screw","A wedge"],e:"🏗️"},
+  {q:"What is the term for energy of motion?",a:"Kinetic energy",c:["Kinetic energy","Potential energy","Chemical energy","Nuclear energy"],e:"🏃"},
+  {q:"What two poles do magnets have?",a:"North and South",c:["North and South","East and West","Positive and Zero","Hot and Cold"],e:"🧲"},
+  {q:"What happens to particles in a gas compared to a solid?",a:"They move much more freely and spread apart",c:["They move much more freely and spread apart","They stop moving completely","They pack tightly together","They disappear"],e:"💨"},
+ ],
+};
+
+const HISTORY_BANKS = {
+ ancient: [
+  {q:"Which ancient civilization built the pyramids at Giza?",a:"The Egyptians",c:["The Egyptians","The Romans","The Greeks","The Mayans"],e:"🏛️"},
+  {q:"What ancient river was central to Egyptian civilization?",a:"The Nile River",c:["The Nile River","The Amazon River","The Tigris River","The Mississippi River"],e:"🌊"},
+  {q:"Which ancient civilization is credited with creating democracy?",a:"Ancient Greece",c:["Ancient Greece","Ancient Rome","Ancient Egypt","Ancient China"],e:"🏺"},
+  {q:"What was the name of the huge wall built to protect ancient China?",a:"The Great Wall of China",c:["The Great Wall of China","The Great Barrier","The Silk Wall","The Jade Wall"],e:"🧱"},
+  {q:"Which ancient civilization built the Colosseum?",a:"The Romans",c:["The Romans","The Egyptians","The Aztecs","The Greeks"],e:"🏟️"},
+  {q:"Mesopotamia developed between which two rivers?",a:"The Tigris and Euphrates",c:["The Tigris and Euphrates","The Nile and Amazon","The Ganges and Indus","The Yangtze and Yellow"],e:"📜"},
+  {q:"What early writing system did the Sumerians invent?",a:"Cuneiform",c:["Cuneiform","Hieroglyphics","The alphabet","Braille"],e:"✍️"},
+  {q:"Which ancient civilization used hieroglyphics as writing?",a:"The Egyptians",c:["The Egyptians","The Romans","The Vikings","The Aztecs"],e:"📝"},
+  {q:"What were ancient Egyptian kings called?",a:"Pharaohs",c:["Pharaohs","Emperors","Senators","Chiefs"],e:"👑"},
+  {q:"Which ancient American civilization built step pyramids in Mexico and Central America?",a:"The Maya",c:["The Maya","The Vikings","The Romans","The Persians"],e:"🗿"},
+ ],
+ colonial: [
+  {q:"What were the first 13 British settlements in North America called?",a:"The Thirteen Colonies",c:["The Thirteen Colonies","The Original States","The New World Territories","The Atlantic Provinces"],e:"🗽"},
+  {q:"What document declared America's independence from Britain in 1776?",a:"The Declaration of Independence",c:["The Declaration of Independence","The Constitution","The Bill of Rights","The Emancipation Proclamation"],e:"📜"},
+  {q:"Who was the primary author of the Declaration of Independence?",a:"Thomas Jefferson",c:["Thomas Jefferson","George Washington","Benjamin Franklin","John Adams"],e:"🖋️"},
+  {q:"Who was the first President of the United States?",a:"George Washington",c:["George Washington","Thomas Jefferson","Abraham Lincoln","John Adams"],e:"🎩"},
+  {q:"What event in 1773 involved colonists dumping tea into Boston Harbor?",a:"The Boston Tea Party",c:["The Boston Tea Party","The Boston Massacre","The Midnight Ride","The Stamp Act Protest"],e:"🍵"},
+  {q:"What document, ratified in 1788, is the foundation of U.S. law?",a:"The United States Constitution",c:["The United States Constitution","The Magna Carta","The Mayflower Compact","The Articles of Confederation"],e:"⚖️"},
+  {q:"Which war was fought between the American colonies and Great Britain from 1775-1783?",a:"The American Revolutionary War",c:["The American Revolutionary War","The War of 1812","The Civil War","The French and Indian War"],e:"⚔️"},
+  {q:"Who rode through the night warning colonists that British troops were coming?",a:"Paul Revere",c:["Paul Revere","George Washington","Benjamin Franklin","Samuel Adams"],e:"🐎"},
+ ],
+ expansion: [
+  {q:"What was the name of the 1803 land deal that doubled the size of the U.S.?",a:"The Louisiana Purchase",c:["The Louisiana Purchase","The Oregon Treaty","The Gadsden Purchase","The Alaska Purchase"],e:"🗺️"},
+  {q:"Who led the famous expedition to explore the Louisiana Purchase?",a:"Lewis and Clark",c:["Lewis and Clark","Columbus and Magellan","Boone and Crockett","Washington and Adams"],e:"🧭"},
+  {q:"What event caused thousands to rush to California in 1849 hoping to strike it rich?",a:"The Gold Rush",c:["The Gold Rush","The Land Rush","The Silver Boom","The Oil Rush"],e:"⛏️"},
+  {q:"What was the trail many pioneers used to travel west in covered wagons?",a:"The Oregon Trail",c:["The Oregon Trail","The Silk Road","The Appalachian Trail","The Santa Fe Highway"],e:"🐴"},
+  {q:"Which American war was fought between the Union and Confederate states?",a:"The Civil War",c:["The Civil War","The Revolutionary War","World War I","The War of 1812"],e:"🎖️"},
+  {q:"What document freed enslaved people in Confederate states in 1863?",a:"The Emancipation Proclamation",c:["The Emancipation Proclamation","The Declaration of Independence","The Bill of Rights","The Gettysburg Address"],e:"✒️"},
+  {q:"Who was President of the United States during the Civil War?",a:"Abraham Lincoln",c:["Abraham Lincoln","George Washington","Ulysses S. Grant","Andrew Jackson"],e:"🎩"},
+ ],
+ geography: [
+  {q:"How many continents are there on Earth?",a:"7",c:["7","5","6","8"],e:"🌍"},
+  {q:"What is the largest ocean on Earth?",a:"The Pacific Ocean",c:["The Pacific Ocean","The Atlantic Ocean","The Indian Ocean","The Arctic Ocean"],e:"🌊"},
+  {q:"What is the longest river in the world?",a:"The Nile River",c:["The Nile River","The Amazon River","The Mississippi River","The Yangtze River"],e:"🏞️"},
+  {q:"What mountain range separates Europe and Asia?",a:"The Ural Mountains",c:["The Ural Mountains","The Rocky Mountains","The Andes","The Alps"],e:"⛰️"},
+  {q:"What is the smallest continent by land area?",a:"Australia",c:["Australia","Europe","Antarctica","South America"],e:"🦘"},
+  {q:"What desert is the largest hot desert in the world?",a:"The Sahara Desert",c:["The Sahara Desert","The Gobi Desert","The Mojave Desert","The Kalahari Desert"],e:"🏜️"},
+ ],
+ government: [
+  {q:"What are the three branches of the U.S. government?",a:"Executive, Legislative, and Judicial",c:["Executive, Legislative, and Judicial","Local, State, and Federal","Military, Civil, and Political","Senate, House, and Court"],e:"🏛️"},
+  {q:"How many U.S. Senators does each state have?",a:"2",c:["2","1","4","6"],e:"🗳️"},
+  {q:"What is the capital of the United States?",a:"Washington, D.C.",c:["Washington, D.C.","New York City","Los Angeles","Philadelphia"],e:"🏙️"},
+  {q:"Which document outlines the basic rights of U.S. citizens, like freedom of speech?",a:"The Bill of Rights",c:["The Bill of Rights","The Declaration of Independence","The Gettysburg Address","The Federalist Papers"],e:"📜"},
+  {q:"What is the job of the Judicial Branch?",a:"To interpret laws and decide if they are constitutional",c:["To interpret laws and decide if they are constitutional","To create new laws","To enforce laws and command the military","To collect taxes"],e:"⚖️"},
+  {q:"How often is the U.S. President elected?",a:"Every 4 years",c:["Every 4 years","Every 2 years","Every 6 years","Every year"],e:"🗳️"},
+  {q:"What is the U.S. law-making body made up of the Senate and House of Representatives called?",a:"Congress",c:["Congress","The Cabinet","The Supreme Court","The Electoral College"],e:"🏛️"},
+ ],
+};
+
+const GOV_MATCH = [
+ {a:"Executive Branch",b:"Enforces the laws (the President)"},
+ {a:"Legislative Branch",b:"Makes the laws (Congress)"},
+ {a:"Judicial Branch",b:"Interprets the laws (the Courts)"},
+ {a:"Bill of Rights",b:"The first 10 amendments to the Constitution"},
+ {a:"Senate",b:"Part of Congress with 2 members per state"},
+ {a:"President",b:"Head of the Executive Branch"},
+];
+
+const HISTORY_MATCH = [
+ {a:"Egypt",b:"Pyramids"},
+ {a:"Greece",b:"Democracy"},
+ {a:"Rome",b:"The Colosseum"},
+ {a:"China",b:"The Great Wall"},
+ {a:"Mesopotamia",b:"Cuneiform writing"},
+ {a:"Maya",b:"Step pyramids"},
+];
+const HISTORY_MATCH2 = [
+ {a:"George Washington",b:"1st U.S. President"},
+ {a:"Thomas Jefferson",b:"Wrote the Declaration of Independence"},
+ {a:"Abraham Lincoln",b:"Led the U.S. through the Civil War"},
+ {a:"Paul Revere",b:"Warned colonists the British were coming"},
+ {a:"Lewis and Clark",b:"Explored the Louisiana Purchase"},
+];
+const HISTORY_MATCH3 = [
+ {a:"Pacific",b:"Largest ocean"},
+ {a:"Nile",b:"Longest river"},
+ {a:"Sahara",b:"Largest hot desert"},
+ {a:"Antarctica",b:"Smallest population continent"},
+ {a:"Washington, D.C.",b:"U.S. capital"},
+];
+
+const HISTORY_TF = [
+ {s:"The Declaration of Independence was signed in 1776.",a:true,e:"Correct."},
+ {s:"George Washington was the second U.S. President.",a:false,e:"He was the first."},
+ {s:"The Great Wall of China was built to protect China from invaders.",a:true,e:"Correct."},
+ {s:"The Louisiana Purchase made the U.S. smaller.",a:false,e:"It doubled the size of the U.S."},
+ {s:"Ancient Egypt developed along the Nile River.",a:true,e:"Correct."},
+ {s:"The U.S. has three branches of government.",a:true,e:"Executive, Legislative, and Judicial."},
+ {s:"The Gold Rush happened in Texas.",a:false,e:"It happened in California, starting in 1848-49."},
+ {s:"Democracy was pioneered by Ancient Greece.",a:true,e:"Correct — in the city-state of Athens."},
+];
+
+// ============ READING: 4th grade review — Main Idea & Cause/Effect (CCSS RI.4.2, literal, single main idea) ============
+const MAIN_IDEA = [
+ {p:"Bees are important insects. They pollinate flowers, which helps plants make fruits and seeds. Without bees, many of the foods we eat wouldn't grow. Farmers depend on bees to keep their crops healthy.",
+  q:"What is this passage mostly about?",a:"Why bees are important for plants and food",
+  c:["Why bees are important for plants and food","How bees build hives","The life cycle of a bee","Different types of flowers"]},
+ {p:"Basketball was invented in 1891 by a teacher named James Naismith. He wanted a game his students could play indoors during the winter. He nailed a peach basket to a wall and made up simple rules. Today, basketball is played all over the world.",
+  q:"What is this passage mostly about?",a:"How basketball was invented",
+  c:["How basketball was invented","The rules of modern basketball","James Naismith's childhood","Winter sports in general"]},
+ {p:"The desert may look empty, but many animals live there. Camels store fat in their humps for energy. Snakes hide under sand to stay cool. Cactus plants store water in their thick stems to survive without rain.",
+  q:"What is this passage mostly about?",a:"How desert animals and plants survive",
+  c:["How desert animals and plants survive","The temperature of the desert","Types of cactus plants","Why camels have humps"]},
+ {p:"Recycling helps the environment in many ways. It saves natural resources like trees and metal. It also reduces the amount of trash sent to landfills. Many schools now have recycling bins in every classroom.",
+  q:"What is this passage mostly about?",a:"The benefits of recycling",
+  c:["The benefits of recycling","How landfills are built","Types of metal","School classroom supplies"]},
+ {p:"The human skeleton has 206 bones. Bones protect your organs, help you move, and store minerals like calcium. Without a skeleton, your body would have no shape at all.",
+  q:"What is this passage mostly about?",a:"The importance of the human skeleton",
+  c:["The importance of the human skeleton","How to keep bones healthy","The number 206","Types of calcium"]},
+ {p:"Volcanoes form when melted rock, called magma, pushes up through cracks in the Earth's crust. When it erupts, the magma is called lava. Some volcanoes erupt violently, while others ooze lava slowly over many years.",
+  q:"What is this passage mostly about?",a:"How volcanoes form and erupt",
+  c:["How volcanoes form and erupt","The difference between rocks and minerals","Where the Earth's crust is thickest","Famous volcanoes in history"]},
+ {p:"Libraries are more than just buildings full of books. Many libraries offer free internet access, host community events, and let people borrow movies and video games. Librarians can also help you research almost any topic.",
+  q:"What is this passage mostly about?",a:"All the things a modern library offers",
+  c:["All the things a modern library offers","How to check out a book","The history of libraries","Famous librarians"]},
+];
+
+const CAUSE_EFFECT = [
+ {q:"The town had no rain for two months. What was the effect?",a:"A drought caused crops to dry up",c:["A drought caused crops to dry up","The rivers flooded","The temperature dropped suddenly","Crops grew faster than usual"]},
+ {q:"Jamal forgot to set his alarm clock. What was the effect?",a:"He woke up late and missed the bus",c:["He woke up late and missed the bus","He arrived at school early","His alarm clock broke","He had a great dream"]},
+ {q:"The construction crew added extra insulation to the new house. What was the effect?",a:"The house stayed warmer in winter",c:["The house stayed warmer in winter","The house became more expensive to cool","The walls turned a different color","The roof leaked"]},
+ {q:"A thick fog rolled over the harbor. What was the effect?",a:"Boats had to slow down because visibility was low",c:["Boats had to slow down because visibility was low","The water became warmer","Fish disappeared from the harbor","The tide rose higher than usual"]},
+ {q:"Why did the ice cream melt quickly on the sidewalk?",a:"Because the sidewalk was very hot",c:["Because the sidewalk was very hot","Because it was made with less sugar","Because it was a cold day","Because it was picked up too fast"]},
+ {q:"Why did the plant in the dark closet turn pale and wilt?",a:"Because it didn't get enough sunlight",c:["Because it didn't get enough sunlight","Because it was watered too much","Because the closet was too cold","Because it was a fake plant"]},
+ {q:"Why did the students cheer loudly at the assembly?",a:"Because their team had won the championship",c:["Because their team had won the championship","Because school was cancelled","Because it was raining outside","Because the assembly ended early"]},
+ {q:"Why did the bridge need to be closed for repairs?",a:"Because inspectors found cracks in the support beams",c:["Because inspectors found cracks in the support beams","Because too many cars used it","Because it was painted the wrong color","Because a new bridge was being built nearby"]},
+];
+
+// ============ READING: 4th grade review — Prefixes & Suffixes ============
+const AFFIXES = [
+ {q:"What does the prefix 'un-' mean, as in 'unhappy'?",a:"Not / opposite of",c:["Not / opposite of","Again","Before","Under"]},
+ {q:"What does the prefix 're-' mean, as in 'rewrite'?",a:"Again",c:["Again","Not","After","Half"]},
+ {q:"What does the suffix '-ful' mean, as in 'joyful'?",a:"Full of",c:["Full of","Without","Before","Small"]},
+ {q:"What does the suffix '-less' mean, as in 'fearless'?",a:"Without",c:["Without","Full of","Again","Very"]},
+ {q:"What does the prefix 'pre-' mean, as in 'preview'?",a:"Before",c:["Before","After","Not","Over"]},
+ {q:"What does the prefix 'dis-' mean, as in 'disagree'?",a:"Not / opposite of",c:["Not / opposite of","Again","Under","Very"]},
+ {q:"What does the suffix '-able' mean, as in 'breakable'?",a:"Able to be",c:["Able to be","Full of","Not able to","Before"]},
+ {q:"What does the prefix 'mis-' mean, as in 'misunderstand'?",a:"Wrongly",c:["Wrongly","Correctly","Again","Before"]},
+ {q:"What does the suffix '-er' mean, as in 'teacher'?",a:"A person who does something",c:["A person who does something","A place where something happens","Full of something","Without something"]},
+ {q:"What does the prefix 'tri-' mean, as in 'triangle'?",a:"Three",c:["Three","One","Two","Four"]},
+];
+
+// ============ READING: 5th grade preview — Theme (CCSS RL.5.2, deeper than main idea) ============
+const THEME = [
+ {p:"A tortoise challenged a hare to a race. The hare, confident in his speed, took a long nap partway through. The slow but steady tortoise kept walking and crossed the finish line first while the hare was still asleep.",
+  q:"What is the theme (lesson) of this story?",a:"Slow and steady effort can win over carelessness",
+  c:["Slow and steady effort can win over carelessness","Hares are faster than tortoises","Races should always be fair","Sleeping is bad for your health"]},
+ {p:"A shepherd boy grew bored and shouted 'Wolf!' as a joke, laughing as the villagers came running for nothing. He did it again and again. When a real wolf finally appeared, he cried for help, but no one believed him anymore.",
+  q:"What is the theme (lesson) of this story?",a:"If you lie often, people will stop trusting you",
+  c:["If you lie often, people will stop trusting you","Wolves are dangerous animals","Shepherds should not be alone","Villagers are always helpful"]},
+ {p:"An ant worked hard all summer storing food, while a grasshopper played music and relaxed. When winter came, the grasshopper had nothing to eat, but the ant had plenty stored away.",
+  q:"What is the theme (lesson) of this story?",a:"It pays to prepare for the future instead of only enjoying today",
+  c:["It pays to prepare for the future instead of only enjoying today","Music is more important than work","Ants are stronger than grasshoppers","Winter is the best season"]},
+ {p:"A crow found a pitcher with a little water at the bottom, too low for his beak to reach. Instead of giving up, he dropped pebbles into the pitcher one by one until the water rose high enough to drink.",
+  q:"What is the theme (lesson) of this story?",a:"Clever thinking can solve a difficult problem",
+  c:["Clever thinking can solve a difficult problem","Crows should not drink water","Pitchers are dangerous for birds","Giving up is sometimes the best choice"]},
+ {p:"Two goats met on a narrow bridge over a deep ravine, each wanting to cross first. Neither would back down, and they butted heads until they both tumbled into the water below.",
+  q:"What is the theme (lesson) of this story?",a:"Refusing to compromise can hurt everyone involved",
+  c:["Refusing to compromise can hurt everyone involved","Bridges are not safe for goats","Water is dangerous","Goats are naturally clumsy"]},
+];
+
+// ============ READING: 5th grade preview — Figurative Language (CCSS RL.5.4) ============
+const FIGLANG = [
+ {q:"The classroom was a zoo during the fire drill. What type of figurative language is this?",a:"Metaphor",c:["Metaphor","Simile","Personification"]},
+ {q:"She was as busy as a bee all afternoon. What type of figurative language is this?",a:"Simile",c:["Simile","Metaphor","Personification"]},
+ {q:"The wind whispered through the trees. What type of figurative language is this?",a:"Personification",c:["Personification","Simile","Metaphor"]},
+ {q:"His feet were as cold as ice. What type of figurative language is this?",a:"Simile",c:["Simile","Metaphor","Personification"]},
+ {q:"Time is money. What type of figurative language is this?",a:"Metaphor",c:["Metaphor","Simile","Personification"]},
+ {q:"The old car groaned as it climbed the hill. What type of figurative language is this?",a:"Personification",c:["Personification","Simile","Metaphor"]},
+ {q:"The stars danced in the night sky. What type of figurative language is this?",a:"Personification",c:["Personification","Simile","Metaphor"]},
+ {q:"He's got a heart of gold. What type of figurative language is this?",a:"Metaphor",c:["Metaphor","Simile","Personification"]},
+ {q:"Her smile was as bright as the sun. What type of figurative language is this?",a:"Simile",c:["Simile","Metaphor","Personification"]},
+ {q:"The leaves waved goodbye as they fell. What type of figurative language is this?",a:"Personification",c:["Personification","Simile","Metaphor"]},
+];
+
+// ============ READING: 5th grade preview — Point of View (CCSS RL.5.6) ============
+const POV = [
+ {q:"'I walked to the store and bought some milk.' What point of view is this written in?",a:"First person",c:["First person","Second person","Third person"]},
+ {q:"'She walked to the store and bought some milk.' What point of view is this written in?",a:"Third person",c:["Third person","First person","Second person"]},
+ {q:"'You should walk to the store and buy some milk.' What point of view is this written in?",a:"Second person",c:["Second person","First person","Third person"]},
+ {q:"A story told using 'I' and 'we' is written in which point of view?",a:"First person",c:["First person","Second person","Third person"]},
+ {q:"A story told using 'he,' 'she,' or 'they' is written in which point of view?",a:"Third person",c:["Third person","First person","Second person"]},
+ {q:"'We packed our bags and left before sunrise.' What point of view is this?",a:"First person",c:["First person","Second person","Third person"]},
+ {q:"'They packed their bags and left before sunrise.' What point of view is this?",a:"Third person",c:["Third person","First person","Second person"]},
+ {q:"Which point of view directly addresses the reader as 'you'?",a:"Second person",c:["Second person","First person","Third person"]},
+];
+
+// ============ READING: 5th grade preview — Greek & Latin Roots (CCSS L.5.4.b) ============
+const GREEK_LATIN = [
+ {q:"The Greek root 'photo' means...",a:"Light",c:["Light","Water","Sound","Life"]},
+ {q:"The root 'bio' (as in 'biology') means...",a:"Life",c:["Life","Light","Earth","Time"]},
+ {q:"The Latin root 'aqua' (as in 'aquarium') means...",a:"Water",c:["Water","Air","Fire","Earth"]},
+ {q:"The Greek root 'tele' (as in 'telephone') means...",a:"Far / distant",c:["Far / distant","Near","Loud","Small"]},
+ {q:"The Latin root 'port' (as in 'transport') means...",a:"To carry",c:["To carry","To see","To write","To build"]},
+ {q:"The Latin root 'spect' (as in 'inspect') means...",a:"To look / see",c:["To look / see","To speak","To carry","To break"]},
+ {q:"The Greek root 'graph' (as in 'autograph') means...",a:"To write",c:["To write","To draw only","To sing","To count"]},
+ {q:"The Greek root 'therm' (as in 'thermometer') means...",a:"Heat",c:["Heat","Cold","Weight","Distance"]},
+ {q:"The Greek root 'auto' (as in 'automobile') means...",a:"Self",c:["Self","Fast","Machine","Wheel"]},
+ {q:"The Greek root 'geo' (as in 'geography') means...",a:"Earth",c:["Earth","Water","Map","Distance"]},
+];
+
+// ============ SCIENCE: match pairs & extra facts ============
+const SCI_MATCH_LIFE = [
+ {a:"Photosynthesis",b:"Process plants use to make food from sunlight"},
+ {a:"Herbivore",b:"An animal that only eats plants"},
+ {a:"Ecosystem",b:"Living things interacting with their environment"},
+ {a:"Decomposer",b:"Breaks down dead material and recycles nutrients"},
+ {a:"Habitat",b:"An animal's natural home"},
+ {a:"Food chain",b:"The transfer of energy through eating"},
+];
+const SCI_MATCH_EARTH = [
+ {a:"Water cycle",b:"How water moves through Earth's systems"},
+ {a:"Igneous rock",b:"Rock formed from cooled lava or magma"},
+ {a:"Mantle",b:"The hot layer beneath Earth's crust"},
+ {a:"Hurricane",b:"A large rotating storm with low pressure"},
+ {a:"Earthquake",b:"Sudden shifting of tectonic plates"},
+ {a:"Milky Way",b:"The galaxy that contains our solar system"},
+];
+const SCI_MATCH_PHYSICAL = [
+ {a:"Friction",b:"A force that slows down moving objects"},
+ {a:"Gravity",b:"Pulls objects toward Earth's center"},
+ {a:"Evaporation",b:"A liquid turning into a gas"},
+ {a:"Kinetic energy",b:"Energy of motion"},
+ {a:"Potential energy",b:"Stored energy, like a stretched rubber band"},
+ {a:"Pulley",b:"A simple machine using a rope and wheel"},
+];
+const SCIENCE_TF = [
+ {s:"Plants use photosynthesis to make their own food.",a:true,e:"Correct — using sunlight, water, and carbon dioxide."},
+ {s:"A decomposer hunts and eats other living animals.",a:false,e:"Decomposers break down dead material — they don't hunt."},
+ {s:"The mantle is the outermost layer of the Earth.",a:false,e:"The crust is the outermost layer; the mantle is beneath it."},
+ {s:"Water freezes at 0°C.",a:true,e:"Correct — that's the freezing point of water."},
+ {s:"Gravity pushes objects away from the Earth.",a:false,e:"Gravity pulls objects toward the Earth's center."},
+ {s:"A pulley is an example of a simple machine.",a:true,e:"Correct — it uses a rope and wheel to lift things."},
+ {s:"Herbivores eat both plants and meat.",a:false,e:"Herbivores eat only plants; omnivores eat both."},
+ {s:"Our solar system is located in the Milky Way galaxy.",a:true,e:"Correct."},
+];
+const SCIENCE_PREVIEW = [
+ {q:"In a food web, what happens if one species disappears?",a:"It can affect many other species connected to it",c:["It can affect many other species connected to it","Nothing changes for other species","All other species disappear too","The ecosystem becomes stronger"],e:"🕸️"},
+ {q:"What is it called when energy changes from one form to another, like electrical to light?",a:"Energy transformation",c:["Energy transformation","Photosynthesis","Evaporation","Erosion"],e:"💡"},
+ {q:"Put the water cycle stages in order: the water first...",a:"Evaporates, then condenses, then precipitates",c:["Evaporates, then condenses, then precipitates","Precipitates, then evaporates, then freezes","Condenses, then freezes, then evaporates","Precipitates, then condenses, then freezes"],e:"💧"},
+ {q:"Which of these is an example of a nonrenewable resource?",a:"Coal",c:["Coal","Sunlight","Wind","Water"],e:"⛏️"},
+ {q:"What do we call organisms that make their own food, like plants?",a:"Producers",c:["Producers","Consumers","Decomposers","Predators"],e:"🌾"},
+ {q:"A lever, pulley, and wheel-and-axle are all examples of what?",a:"Simple machines",c:["Simple machines","Ecosystems","Energy sources","Rock types"],e:"⚙️"},
+ {q:"What causes seasons to change on Earth?",a:"The tilt of Earth's axis as it orbits the sun",c:["The tilt of Earth's axis as it orbits the sun","The changing distance from the sun each day","The moon blocking sunlight","Ocean currents changing direction"],e:"🍂"},
+ {q:"What is the main way heat travels through empty space, like from the sun to Earth?",a:"Radiation",c:["Radiation","Conduction","Convection","Friction"],e:"☀️"},
+ {q:"Which rock type forms from layers of sediment pressed together over time?",a:"Sedimentary rock",c:["Sedimentary rock","Igneous rock","Metamorphic rock","Volcanic rock"],e:"🪨"},
+ {q:"What is the process called when a caterpillar changes into a butterfly?",a:"Metamorphosis",c:["Metamorphosis","Photosynthesis","Pollination","Hibernation"],e:"🦋"},
+];
+// ============ UTILITIES ============
+function sh(a){const r=[...a];for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+function pk(a,n){return sh(a).slice(0,Math.min(n,a.length));}
+function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+function ri(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+// ============ STATE / PERSISTENCE ============
+let S={screen:'home',subject:null,tier:null,gameId:null,level:1};
+let PROGRESS={stars:0,xp:0,completedGames:{},arcadeUnlocked:[],bestArcade:{}};
+
+function saveProgress(){try{localStorage.setItem('bb5_progress',JSON.stringify(PROGRESS));}catch(e){}}
+function loadProgress(){try{const d=localStorage.getItem('bb5_progress');if(d)PROGRESS=Object.assign(PROGRESS,JSON.parse(d));}catch(e){}}
+
+function ss(u){Object.assign(S,u);try{render();}catch(e){console.error('render error',e);S.screen='home';render();}}
+
+// ============ SOUND ============
+function playOK(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type="square";o.frequency.setValueAtTime(988,c.currentTime);o.frequency.setValueAtTime(1319,c.currentTime+.07);g.gain.setValueAtTime(.15,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.35);o.start(c.currentTime);o.stop(c.currentTime+.35);}catch(e){}}
+function playNo(){try{const c=new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain(),f=c.createBiquadFilter();o.connect(f);f.connect(g);g.connect(c.destination);o.type="sawtooth";o.frequency.setValueAtTime(110,c.currentTime);f.type="lowpass";f.frequency.setValueAtTime(700,c.currentTime);g.gain.setValueAtTime(.2,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.4);o.start(c.currentTime);o.stop(c.currentTime+.4);}catch(e){}}
+
+function fireConfetti(){
+  const wrap=document.createElement('div');
+  wrap.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:999;overflow:hidden;';
+  document.body.appendChild(wrap);
+  const colors=['#FFD93D','#00D68F','#4FC3F7','#FF6B9D','#FF8C00'];
+  for(let i=0;i<28;i++){
+    const p=document.createElement('div');
+    const c=rnd(colors);
+    p.style.cssText=`position:absolute;left:${Math.random()*100}%;top:-20px;width:9px;height:9px;background:${c};border-radius:2px;animation:confettiSpin ${1.2+Math.random()*.8}s ease-in forwards;animation-delay:${Math.random()*.3}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>wrap.remove(),2200);
+}
+
+// ============ NOVA MASCOT WIDGET ============
+const NOVA_OK=["Nice work!","You got it!","Great job!","Nailed it!","Way to go!","Excellent!","You crushed it!"];
+const NOVA_NO=["So close!","Nice try!","Keep going!","You'll get the next one!","Almost there!"];
+const NOVA_GREET=["Let's do this!","Ready? Go!","Time to think!","Let's roll!"];
+function novaMsg(state){
+  const txt = state==='ok'?rnd(NOVA_OK):state==='no'?rnd(NOVA_NO):rnd(NOVA_GREET);
+  return `<div class="nova"><span class="nova-face">🚀</span><span class="nova-bubble">${txt}</span></div>`;
+}
+
+// ============ GENERIC UI HELPERS ============
+function progBar(cur,tot,score){return `<div class="pw"><div class="pb"><div class="pf" style="width:${(cur/tot)*100}%"></div></div><div class="ps">⭐ ${score}</div></div>`;}
+function choiceBtn(c,isC,tp,rv){
+  let cls='ab';
+  if(rv&&isC)cls+=' ok'; else if(tp&&!isC)cls+=' no'; else if(rv)cls+=' dm';
+  return `<button class="mc ${cls}" data-c="${esc(c)}">${rv&&isC?'✅ ':tp&&!isC?'❌ ':''}${esc(c)}</button>`;
+}
+function feedback(ok,answer){
+  return ok
+   ? `<div class="fbwrap"><div class="fbtxt ok">🎉 CORRECT!</div></div>`
+   : `<div class="fbwrap"><div class="fbtxt no">ANSWER: <span>${esc(answer)}</span></div></div>`;
+}
+function nextBtn(){return `<button class="btn bp nextbtn" style="margin-top:12px;">CONTINUE →</button>`;}
+
+const ROUNDS_PER_SESSION=8;
+const TROPHY_THRESHOLD=6;
+
+// ============ TRIVIA ENGINE (used by vocab, idioms, science, history, word problems) ============
+function playTrivia(el,pool,onDone){
+  const rounds=pk(pool,ROUNDS_PER_SESSION).map(r=>({q:r.q,a:r.a,c:sh([r.a,...(r.c||[]).filter(x=>x!==r.a)]).slice(0,4),emoji:r.e||''}));
+  if(!rounds.some(r=>r.c.includes(r.a)))return;
+  let i=0,sc=0,chosen=null;
+  function advance(isOk){
+    const ns=isOk?sc+1:sc;
+    if(i+1>=rounds.length){onDone(ns,rounds.length);}else{sc=ns;i++;chosen=null;show();}
+  }
+  function show(){
+    const r=rounds[i];
+    const rv=chosen!==null;
+    const ok=rv&&chosen===r.a;
+    el.innerHTML=`${progBar(i,rounds.length,sc)}<div class="card">
+      ${i===0&&!rv?novaMsg('greet'):rv?novaMsg(ok?'ok':'no'):''}
+      ${r.emoji?`<div style="text-align:center;font-size:38px;margin-bottom:4px;">${r.emoji}</div>`:''}
+      <div class="qtext">${esc(r.q)}</div>
+      <div class="g2">${r.c.map(c=>choiceBtn(c,c===r.a,chosen===c,rv)).join('')}</div>
+      ${rv?feedback(ok,r.a):''}
+      ${rv&&!ok?nextBtn():''}
+    </div>`;
+    if(!rv)el.querySelectorAll('.mc').forEach(b=>b.addEventListener('click',()=>{
+      chosen=b.dataset.c;
+      const isOk=chosen===r.a;
+      isOk?playOK():playNo();
+      show();
+      if(isOk)setTimeout(()=>advance(true),700);
+    }));
+    else if(!ok){const nb=el.querySelector('.nextbtn');if(nb)nb.addEventListener('click',()=>advance(false));}
+  }
+  show();
+}
+
+// ============ FILL IN THE BLANK ============
+function playFill(el,pool,onDone){
+  const rounds=pk(pool,ROUNDS_PER_SESSION);
+  let i=0,sc=0,chosen=null;
+  function advance(isOk){
+    const ns=isOk?sc+1:sc;
+    if(i+1>=rounds.length){onDone(ns,rounds.length);}else{sc=ns;i++;chosen=null;show();}
+  }
+  function show(){
+    const r=rounds[i];
+    const rv=chosen!==null;
+    const ok=rv&&chosen===r.a;
+    const parts=r.s.split('___');
+    el.innerHTML=`${progBar(i,rounds.length,sc)}<div class="card">
+      ${i===0&&!rv?novaMsg('greet'):rv?novaMsg(ok?'ok':'no'):''}
+      <div class="qtext" style="text-align:left;">${esc(parts[0])}<span class="blank">${rv?esc(r.a):'____'}</span>${esc(parts[1]||'')}</div>
+      <div class="g2">${sh(r.c).map(c=>choiceBtn(c,c===r.a,chosen===c,rv)).join('')}</div>
+      ${rv?feedback(ok,r.a):''}
+      ${rv&&!ok?nextBtn():''}
+    </div>`;
+    if(!rv)el.querySelectorAll('.mc').forEach(b=>b.addEventListener('click',()=>{
+      chosen=b.dataset.c;
+      const isOk=chosen===r.a;
+      isOk?playOK():playNo();
+      show();
+      if(isOk)setTimeout(()=>advance(true),700);
+    }));
+    else if(!ok){const nb=el.querySelector('.nextbtn');if(nb)nb.addEventListener('click',()=>advance(false));}
+  }
+  show();
+}
+
+// ============ TRUE OR FALSE ============
+function playTF(el,pool,onDone){
+  const rounds=pk(pool,ROUNDS_PER_SESSION);
+  let i=0,sc=0,chosen=null;
+  function advance(isOk){
+    const ns=isOk?sc+1:sc;
+    if(i+1>=rounds.length){onDone(ns,rounds.length);}else{sc=ns;i++;chosen=null;show();}
+  }
+  function show(){
+    const r=rounds[i];
+    const rv=chosen!==null;
+    const ok=rv&&chosen===r.a;
+    el.innerHTML=`${progBar(i,rounds.length,sc)}<div class="card">
+      ${i===0&&!rv?novaMsg('greet'):rv?novaMsg(ok?'ok':'no'):''}
+      <div class="qtext">${esc(r.s)}</div>
+      <div style="display:flex;gap:12px;">
+        <button class="tfbtn" data-v="true" style="${rv?(r.a===true?'background:#E8FFF4;border-color:#00D68F;color:#00A86B;':'background:#F3F3F8;color:#999;'):''}" ${rv?'disabled':''}>👍 TRUE</button>
+        <button class="tfbtn" data-v="false" style="${rv?(r.a===false?'background:#E8FFF4;border-color:#00D68F;color:#00A86B;':'background:#F3F3F8;color:#999;'):''}" ${rv?'disabled':''}>👎 FALSE</button>
+      </div>
+      ${rv?`<div class="fbwrap"><div class="fbtxt ${ok?'ok':'no'}">${ok?'🎉 CORRECT!':(r.a?'IT WAS TRUE':'IT WAS FALSE')}</div><div class="fbexpl">${esc(r.e||'')}</div></div>`:''}
+      ${rv&&!ok?nextBtn():''}
+    </div>`;
+    if(!rv)el.querySelectorAll('.tfbtn').forEach(b=>b.addEventListener('click',()=>{
+      chosen=(b.dataset.v==='true');
+      const isOk=chosen===r.a;
+      isOk?playOK():playNo();
+      show();
+      if(isOk)setTimeout(()=>advance(true),700);
+    }));
+    else if(!ok){const nb=el.querySelector('.nextbtn');if(nb)nb.addEventListener('click',()=>advance(false));}
+  }
+  show();
+}
+
+// ============ 2-BUCKET SORT ============
+function playSort(el,pool,onDone){
+  const rounds=pk(pool,Math.min(5,pool.length));
+  let i=0,sc=0;
+  function ir(){
+    const r=rounds[i];
+    let words=[...r.wordsA.map((w,j)=>({t:w,id:'a'+j,correct:'A',bucket:null})),...r.wordsB.map((w,j)=>({t:w,id:'b'+j,correct:'B',bucket:null}))];
+    words=sh(words);
+    let checked=false,sel=null;
+    function advance(isOk){
+      const ns=isOk?sc+1:sc;
+      if(i+1>=rounds.length){onDone(ns,rounds.length);}else{sc=ns;i++;ir();}
+    }
+    function show(){
+      const unsorted=words.filter(w=>w.bucket===null);
+      const inA=words.filter(w=>w.bucket==='A'), inB=words.filter(w=>w.bucket==='B');
+      const allSorted=words.every(w=>w.bucket!==null);
+      const allCorrect=words.every(w=>w.bucket===w.correct);
+      function chip(w){
+        const isSel=sel===w.id;
+        const isSorted=w.bucket!==null;
+        const isR=checked&&w.bucket===w.correct;
+        const isW=checked&&w.bucket!==null&&w.bucket!==w.correct;
+        let cls='chip'+(isSel?' sel':'')+(isSorted&&!checked?' placed':'')+(isR?' right':'')+(isW?' wrong':'');
+        return `<button class="${cls}" data-id="${w.id}">${w.t}</button>`;
+      }
+      el.innerHTML=`${progBar(i,rounds.length,sc)}<div class="card">
+        ${i===0&&!checked?novaMsg('greet'):checked?novaMsg(allCorrect?'ok':'no'):''}
+        <div class="qtext" style="margin-bottom:6px;">Tap a word, then tap the correct group!</div>
+        ${unsorted.length?`<div class="chiprow">${unsorted.map(chip).join('')}</div>`:''}
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <div class="bucket" data-b="A"><div class="bhead">${r.categoryA}</div><div class="chiprow">${inA.map(chip).join('')}</div></div>
+          <div class="bucket" data-b="B"><div class="bhead">${r.categoryB}</div><div class="chiprow">${inB.map(chip).join('')}</div></div>
+        </div>
+        ${!checked?`<button class="btn bp checkbtn" style="margin-top:12px;opacity:${allSorted?1:.4};" ${allSorted?'':'disabled'}>✓ CHECK</button>`:`<div class="fbwrap"><div class="fbtxt ${allCorrect?'ok':'no'}">${allCorrect?'🎉 PERFECT SORT!':'😅 CHECK HIGHLIGHTED'}</div></div>${!allCorrect?nextBtn():''}`}
+      </div>`;
+      if(!checked){
+        el.querySelectorAll('.chip').forEach(b=>b.addEventListener('click',()=>{
+          const w=words.find(x=>x.id===b.dataset.id);
+          if(w.bucket!==null){w.bucket=null;sel=null;show();return;}
+          sel=(sel===w.id)?null:w.id;show();
+        }));
+        el.querySelectorAll('.bucket').forEach(b=>b.addEventListener('click',()=>{
+          if(!sel)return;
+          const w=words.find(x=>x.id===sel);
+          w.bucket=b.dataset.b; sel=null; show();
+        }));
+        const cb=el.querySelector('.checkbtn');
+        if(cb)cb.addEventListener('click',()=>{
+          checked=true;
+          allCorrect?playOK():playNo();
+          show();
+          if(allCorrect)setTimeout(()=>advance(true),800);
+        });
+      } else if(!allCorrect){
+        const nb=el.querySelector('.nextbtn');
+        if(nb)nb.addEventListener('click',()=>advance(false));
+      }
+    }
+    show();
+  }
+  ir();
+}
+
+// ============ UNSCRAMBLE ============
+function playScramble(el,pool,onDone){
+  const rounds=pk(pool,Math.min(6,pool.length));
+  let i=0,sc=0;
+  function ir(){
+    const r=rounds[i];
+    const scrambled=(()=>{let a=r.word.split('');for(let k=0;k<3;k++)a=sh(a);return a;})();
+    let letters=scrambled.map((c,j)=>({c,used:false,id:j}));
+    let chosen=[],done2=false;
+    function advance(isOk){
+      const ns=isOk?sc+1:sc;
+      if(i+1>=rounds.length){onDone(ns,rounds.length);}else{sc=ns;i++;ir();}
+    }
+    function show(){
+      const ok=chosen.map(l=>l.c).join('').toLowerCase()===r.word.toLowerCase();
+      el.innerHTML=`${progBar(i,rounds.length,sc)}<div class="card">
+        ${i===0&&!done2?novaMsg('greet'):done2?novaMsg(ok?'ok':'no'):''}
+        <div class="qtext" style="margin-bottom:10px;">💡 ${esc(r.hint)}</div>
+        <div class="scram-slots">${chosen.map(l=>`<div class="tile filled">${l.c.toUpperCase()}</div>`).join('')}${Array.from({length:r.word.length-chosen.length}).map(()=>`<div class="tile empty"></div>`).join('')}</div>
+        <div class="scram-pool">${letters.map(l=>`<button class="tile pool" data-id="${l.id}" style="${l.used?'visibility:hidden;':''}">${l.c.toUpperCase()}</button>`).join('')}</div>
+        ${done2?`<div class="fbwrap"><div class="fbtxt ${ok?'ok':'no'}">${ok?'🎉 CORRECT!':'IT WAS: '+r.word.toUpperCase()}</div></div>${!ok?nextBtn():''}`:`<button class="btn bg2 resetbtn" style="margin-top:10px;">🔄 Reset</button>`}
+      </div>`;
+      if(!done2){
+        el.querySelectorAll('.pool').forEach(b=>b.addEventListener('click',()=>{
+          const l=letters.find(x=>x.id==b.dataset.id);
+          if(l.used)return;
+          l.used=true; chosen.push(l); show();
+          if(chosen.length===r.word.length){
+            done2=true;
+            const won=chosen.map(x=>x.c).join('').toLowerCase()===r.word.toLowerCase();
+            won?playOK():playNo();
+            show();
+            if(won)setTimeout(()=>advance(true),700);
+          }
+        }));
+        const rb=el.querySelector('.resetbtn');
+        if(rb)rb.addEventListener('click',()=>{letters=letters.map(l=>({...l,used:false}));chosen=[];show();});
+      } else if(!ok){
+        const nb=el.querySelector('.nextbtn');
+        if(nb)nb.addEventListener('click',()=>advance(false));
+      }
+    }
+    show();
+  }
+  ir();
+}
+
+// ============ READING PASSAGE ============
+function playPassage(el,pool,onDone){
+  const rounds=pk(pool,Math.min(5,pool.length));
+  let i=0,sc=0,chosen=null;
+  function advance(isOk){
+    const ns=isOk?sc+1:sc;
+    if(i+1>=rounds.length){onDone(ns,rounds.length);}else{sc=ns;i++;chosen=null;show();}
+  }
+  function show(){
+    const r=rounds[i];
+    const rv=chosen!==null;
+    const ok=rv&&chosen===r.a;
+    el.innerHTML=`${progBar(i,rounds.length,sc)}<div class="card">
+      ${i===0&&!rv?novaMsg('greet'):rv?novaMsg(ok?'ok':'no'):''}
+      <div class="passage">${esc(r.p)}</div>
+      <div class="qtext">${esc(r.q)}</div>
+      <div class="g2col">${sh(r.c).map(c=>choiceBtn(c,c===r.a,chosen===c,rv)).join('')}</div>
+      ${rv?feedback(ok,r.a):''}
+      ${rv&&!ok?nextBtn():''}
+    </div>`;
+    if(!rv)el.querySelectorAll('.mc').forEach(b=>b.addEventListener('click',()=>{
+      chosen=b.dataset.c;
+      const isOk=chosen===r.a;
+      isOk?playOK():playNo();
+      show();
+      if(isOk)setTimeout(()=>advance(true),700);
+    }));
+    else if(!ok){const nb=el.querySelector('.nextbtn');if(nb)nb.addEventListener('click',()=>advance(false));}
+  }
+  show();
+}
+
+// ============ MEMORY MATCH (used both as a learning game & arcade) ============
+function playMatchPairs(el,pool,onDone){
+  const pairs=pk(pool,Math.min(6,pool.length));
+  let cards=[];
+  pairs.forEach((p,idx)=>{cards.push({id:idx+'a',text:p.a,pair:idx,found:false});cards.push({id:idx+'b',text:p.b,pair:idx,found:false});});
+  cards=sh(cards);
+  let flipped=[],lock=false,foundCount=0;
+  function show(){
+    el.innerHTML=`<div class="card">
+      <div class="qtext">Tap two cards that go together!</div>
+      <div class="matchgrid">${cards.map(c=>{
+        const isFlipped=flipped.includes(c.id)||c.found;
+        return `<button class="matchcard ${isFlipped?'flip':''} ${c.found?'found':''}" data-id="${c.id}">${isFlipped?esc(c.text):'❓'}</button>`;
+      }).join('')}</div>
+      <div class="ps" style="text-align:center;margin-top:8px;">Pairs found: ${foundCount}/${pairs.length}</div>
+    </div>`;
+    el.querySelectorAll('.matchcard').forEach(b=>b.addEventListener('click',()=>{
+      if(lock)return;
+      const c=cards.find(x=>x.id===b.dataset.id);
+      if(c.found||flipped.includes(c.id))return;
+      flipped.push(c.id); show();
+      if(flipped.length===2){
+        lock=true;
+        const [c1,c2]=flipped.map(id=>cards.find(x=>x.id===id));
+        if(c1.pair===c2.pair){
+          c1.found=true;c2.found=true;foundCount++;playOK();
+          setTimeout(()=>{flipped=[];lock=false;show();
+            if(foundCount===pairs.length){onDone(pairs.length,pairs.length);}
+          },500);
+        } else {
+          playNo();
+          setTimeout(()=>{flipped=[];lock=false;show();},900);
+        }
+      }
+    }));
+  }
+  show();
+}
+
+// ============ MATH GENERATORS ============
+function mkNumChoices(ans){
+  const set=new Set([String(ans)]);
+  while(set.size<4){
+    const delta=ri(1,Math.max(2,Math.round(Math.abs(ans)*0.2)+1));
+    const v=Math.random()>.5?Number(ans)+delta:Number(ans)-delta;
+    set.add(String(v));
+  }
+  return sh([...set]);
+}
+// ===== MATH GENERATORS — grounded in Common Core 4th/5th + Singapore Primary 5 =====
+// Tier 1-3 = 4th grade review. Tier 4-5 = 5th grade preview.
+
+// 4th review: place value & rounding (CCSS 4.NBT.A)
+function genPlaceValue(lv){
+  return Array.from({length:12},()=>{
+    if(lv<=1){
+      const n=ri(1000,98765); const ns=String(n);
+      const posNames=['ones','tens','hundreds','thousands','ten thousands'];
+      const idx=ri(0,ns.length-1); const digit=Number(ns[ns.length-1-idx]); const place=posNames[idx]||'ones';
+      return {q:`In the number ${n.toLocaleString()}, what digit is in the ${place} place?`,a:String(digit),c:mkNumChoices(digit)};
+    } else {
+      const n=ri(1000,987654); const roundTo=rnd([10,100,1000]);
+      const ansNum=Math.round(n/roundTo)*roundTo;
+      const raw=mkNumChoices(ansNum);
+      return {q:`Round ${n.toLocaleString()} to the nearest ${roundTo}.`,a:ansNum.toLocaleString(),c:raw.map(x=>Number(x).toLocaleString())};
+    }
+  });
+}
+// 4th review: multi-digit multiplication fluency (CCSS 4.NBT.B.5)
+function genMultiDigit(lv){
+  return Array.from({length:12},()=>{
+    let a,b; if(lv<=1){a=ri(112,987);b=ri(2,9);} else {a=ri(11,89);b=ri(11,89);}
+    const ans=a*b;
+    return {q:`${a} × ${b} = ?`,a:String(ans),c:mkNumChoices(ans)};
+  });
+}
+// 4th review: multi-digit division (CCSS 4.NBT.B.6)
+function genDivision(lv){
+  return Array.from({length:12},()=>{
+    const b=ri(2,9); const q=lv<=1?ri(10,50):ri(15,99); const a=b*q;
+    const withRem=lv>1&&Math.random()<0.35;
+    if(withRem){const rem=ri(1,b-1); const dividend=a+rem; return {q:`${dividend} ÷ ${b} = ? (whole number — ignore the remainder)`,a:String(q),c:mkNumChoices(q)};}
+    return {q:`${a} ÷ ${b} = ?`,a:String(q),c:mkNumChoices(q)};
+  });
+}
+// 4th review: fraction equivalence & comparing (CCSS 4.NF.A)
+function genFracEquiv(lv){
+  return Array.from({length:12},()=>{
+    if(Math.random()<.5){
+      const d=rnd([2,3,4,5,6]); const n=ri(1,d-1); const mult=ri(2,4);
+      const ans=`${n*mult}/${d*mult}`;
+      const wrongs=sh([`${n*mult+1}/${d*mult}`,`${n}/${d*mult}`,`${n*mult}/${d*mult+1}`]);
+      return {q:`Which fraction is equivalent to ${n}/${d}?`,a:ans,c:sh([ans,...wrongs])};
+    } else {
+      let n1,d1,n2,d2,v1,v2;
+      do{d1=rnd([2,3,4,5,6,8]);d2=rnd([2,3,4,5,6,8]);n1=ri(1,d1-1);n2=ri(1,d2-1);v1=n1/d1;v2=n2/d2;}while(v1===v2);
+      const bigger=v1>v2?`${n1}/${d1}`:`${n2}/${d2}`;
+      return {q:`Which fraction is greater: ${n1}/${d1} or ${n2}/${d2}?`,a:bigger,c:[`${n1}/${d1}`,`${n2}/${d2}`]};
+    }
+  });
+}
+// 4th review: add/subtract fractions with the SAME denominator (CCSS 4.NF.B.3)
+function genFracAddSub(lv){
+  return Array.from({length:12},()=>{
+    const d=rnd([2,3,4,5,6,8,10]); const n1=ri(1,d-1); const n2=ri(1,d-1);
+    if(Math.random()<.5){const sum=n1+n2; const g=gcd(sum,d); return {q:`${n1}/${d} + ${n2}/${d} = ?`,a:`${sum/g}/${d/g}`,c:mkFracChoices(sum,d)};}
+    const a1=Math.max(n1,n2),a2=Math.min(n1,n2);const diff=a1-a2;const g=gcd(diff||1,d);
+    return {q:`${a1}/${d} - ${a2}/${d} = ?`,a:diff===0?'0':`${diff/g}/${d/g}`,c:mkFracChoices(diff,d)};
+  });
+}
+// 4th review: factors & multiples (CCSS 4.OA.B.4)
+function genFactors(lv){
+  return Array.from({length:12},()=>{
+    const n=lv<=1?rnd([12,16,18,20,24,30,36]):rnd([28,32,42,45,48,54,60,72]);
+    const factorsOf=[]; for(let i=1;i<=n;i++) if(n%i===0) factorsOf.push(i);
+    let nonFactor; do{nonFactor=ri(2,n+5);}while(factorsOf.includes(nonFactor));
+    const correctFactor=rnd(factorsOf.filter(f=>f!==1&&f!==n))||factorsOf[1]||factorsOf[0];
+    const pool=[...new Set([correctFactor,nonFactor,nonFactor+1,nonFactor+3])];
+    return {q:`Which of these numbers is a factor of ${n}?`,a:String(correctFactor),c:sh(pool).map(String)};
+  });
+}
+// 4th review: decimal notation to tenths/hundredths (CCSS 4.NF.C)
+function genDecimals(lv){
+  return Array.from({length:12},()=>{
+    if(lv<=1){
+      const a=(ri(1,90)/10).toFixed(1); const b=(ri(1,90)/10).toFixed(1);
+      const sum=(parseFloat(a)+parseFloat(b)).toFixed(1);
+      return {q:`${a} + ${b} = ?`,a:sum,c:mkNumChoices(sum)};
+    }
+    const a=(ri(10,98)/100).toFixed(2); const b=(ri(10,98)/100).toFixed(2);
+    const bigger=parseFloat(a)>=parseFloat(b)?a:b;
+    return {q:`Which decimal is greater: ${a} or ${b}?`,a:bigger,c:[a,b]};
+  });
+}
+// 4th review: area & perimeter of rectangles (CCSS 4.MD.A.3)
+function genAreaPerim(lv){
+  return Array.from({length:12},()=>{
+    const l=ri(3,15),w=ri(3,12);
+    const t=lv<=1?'area':'perimeter';
+    const ans=t==='area'?l*w:2*(l+w);
+    return {q:`A rectangle is ${l} units long and ${w} units wide. What is its ${t}${t==='area'?' (sq units)':' (units)'}?`,a:String(ans),c:mkNumChoices(ans)};
+  });
+}
+// 4th review: classifying angles (CCSS 4.MD.C.5-6)
+function genAngles(lv){
+  return Array.from({length:12},()=>{
+    if(lv<=1){
+      const deg=ri(1,179); const type=deg<90?'Acute':deg===90?'Right':'Obtuse';
+      return {q:`An angle measuring ${deg}° is best classified as:`,a:type,c:['Acute','Right','Obtuse']};
+    }
+    const a1=ri(30,150); const ans=180-a1;
+    return {q:`Two angles form a straight line. One angle is ${a1}°. What is the other angle?`,a:String(ans)+'°',c:mkNumChoices(ans).map(x=>x+'°')};
+  });
+}
+// 5th NEW: add fractions with UNLIKE (related) denominators (CCSS 5.NF.A.1)
+function genFracUnlike(lv){
+  return Array.from({length:12},()=>{
+    const pairs=[[2,4],[2,6],[3,6],[2,8],[4,8],[3,9],[5,10],[2,10]];
+    const [dsmall,dbig]=rnd(pairs);
+    const n1=ri(1,dsmall-1), n2=ri(1,dbig-1);
+    const mult=dbig/dsmall; const commonNum=n1*mult+n2; const g=gcd(commonNum,dbig);
+    return {q:`${n1}/${dsmall} + ${n2}/${dbig} = ?  (hint: rewrite ${n1}/${dsmall} with a denominator of ${dbig})`,a:`${commonNum/g}/${dbig/g}`,c:mkFracChoices(commonNum,dbig)};
+  });
+}
+// 5th NEW: multiply a fraction by a whole number (CCSS 5.NF.B.4)
+function genFracMultiply(lv){
+  return Array.from({length:12},()=>{
+    const d=rnd([2,3,4,5,6,8]); const n=ri(1,d-1); const w=ri(2,6);
+    const num=n*w; const g=gcd(num,d);
+    return {q:`${n}/${d} × ${w} = ?`,a:`${num/g}/${d/g}`,c:mkFracChoices(num,d)};
+  });
+}
+// 5th NEW: basic order of operations / PEMDAS (CCSS 5.OA.A.1)
+function genOrderOps(lv){
+  return Array.from({length:12},()=>{
+    const a=ri(2,9),b=ri(2,9),c=ri(2,9);
+    let expr,ans;
+    if(Math.random()<.5){expr=`${a} + ${b} × ${c}`; ans=a+b*c;} else {expr=`(${a} + ${b}) × ${c}`; ans=(a+b)*c;}
+    return {q:`Solve using order of operations: ${expr}`,a:String(ans),c:mkNumChoices(ans)};
+  });
+}
+// 5th NEW: percentage of a number (Singapore P5)
+function genPercent(lv){
+  return Array.from({length:12},()=>{
+    const pct=rnd([10,20,25,50,75]); const base=rnd([20,40,60,80,100,200]);
+    const ans=(pct/100)*base;
+    return {q:`What is ${pct}% of ${base}?`,a:String(ans),c:mkNumChoices(ans)};
+  });
+}
+// 5th NEW: ratio (Singapore P5)
+function genRatio(lv){
+  return Array.from({length:12},()=>{
+    const r1=ri(2,5), r2=ri(2,5), mult=ri(2,6);
+    const total1=r1*mult, ans=r2*mult;
+    return {q:`The ratio of red to blue marbles is ${r1}:${r2}. If there are ${total1} red marbles, how many blue marbles are there?`,a:String(ans),c:mkNumChoices(ans)};
+  });
+}
+// 5th NEW: volume of a rectangular prism (CCSS 5.MD.C, Singapore P5)
+function genVolume(lv){
+  return Array.from({length:12},()=>{
+    const l=ri(2,10),w=ri(2,8),h=ri(2,6); const ans=l*w*h;
+    return {q:`A rectangular box is ${l} cm long, ${w} cm wide, and ${h} cm tall. What is its volume? (length × width × height)`,a:String(ans)+' cm³',c:mkNumChoices(ans).map(x=>x+' cm³')};
+  });
+}
+
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){[a,b]=[b,a%b];}return a||1;}
+function mkFracChoices(num,den){
+  const g=gcd(num,den)||1; const simplified=`${num/g}/${den/g}`;
+  const set=new Set([simplified]);
+  while(set.size<4){const n2=Math.max(0,num+ri(-2,2));set.add(`${n2}/${den}`);}
+  return sh([...set]);
+}
+
+// ============ GAME REGISTRY ============
+const GAME_DEFS={
+  // ---- Reading ----
+  vocab:{kind:'trivia',label:'Vocabulary in Context',emoji:'📚',color:'#FF6B9D',data:VOCAB.map(v=>({q:`What does "${v.w}" mean?`,a:v.d,c:[v.d,...v.wrong]}))},
+  context:{kind:'fill',label:'Context Clues',emoji:'🔍',color:'#00A8FF',data:CONTEXT_FILL},
+  catsortR:{kind:'sort',label:'Synonyms & Antonyms',emoji:'🗂️',color:'#FF8C00',data:CATSORT_READING},
+  mainidea:{kind:'passage',label:'Main Idea & Details',emoji:'🔑',color:'#0E6E8E',data:MAIN_IDEA},
+  causeeffect:{kind:'trivia',label:'Cause & Effect',emoji:'🔗',color:'#26A69A',data:CAUSE_EFFECT},
+  grammar:{kind:'truefalse',label:'Grammar Check',emoji:'✅',color:'#FF4757',data:GRAMMAR_TF},
+  affixes:{kind:'trivia',label:'Prefixes & Suffixes',emoji:'🧩',color:'#8D6E63',data:AFFIXES},
+  scramble:{kind:'scramble',label:'Unscramble',emoji:'🔤',color:'#00D68F',data:SCRAMBLE_WORDS},
+  theme:{kind:'passage',label:'Theme (New!)',emoji:'💡',color:'#7C4DFF',data:THEME},
+  figlang:{kind:'trivia',label:'Figurative Language (New!)',emoji:'🎭',color:'#9B6FE8',data:FIGLANG},
+  pov:{kind:'trivia',label:'Point of View (New!)',emoji:'👁️',color:'#5C6BC0',data:POV},
+  idioms:{kind:'trivia',label:'Idioms (New!)',emoji:'💬',color:'#EC407A',data:IDIOMS.map(v=>({q:`What does the idiom "${v.i}" mean?`,a:v.m,c:[v.m,...v.wrong]}))},
+  comprehension:{kind:'passage',label:'Reading Detective (New!)',emoji:'🕵️',color:'#0E6E8E',data:COMPREHENSION},
+  rootwords:{kind:'trivia',label:'Greek & Latin Roots (New!)',emoji:'🌐',color:'#42A5A5',data:GREEK_LATIN},
+
+  // ---- Math ----
+  placevalue:{kind:'mathgen',label:'Place Value & Rounding',emoji:'🔢',color:'#00A8FF',gen:genPlaceValue},
+  multdigit:{kind:'mathgen',label:'Multi-Digit Multiplication',emoji:'✖️',color:'#3FA9F5',gen:genMultiDigit},
+  division:{kind:'mathgen',label:'Division Fluency',emoji:'➗',color:'#1E6FD0',gen:genDivision},
+  fraceq:{kind:'mathgen',label:'Fraction Equivalence',emoji:'🍕',color:'#FF8C00',gen:genFracEquiv},
+  fracaddsub:{kind:'mathgen',label:'Add/Subtract Fractions',emoji:'➕',color:'#FFB400',gen:genFracAddSub},
+  factors:{kind:'mathgen',label:'Factors & Multiples',emoji:'🔍',color:'#8D6E63',gen:genFactors},
+  decimals:{kind:'mathgen',label:'Decimals',emoji:'💯',color:'#2FB6D6',gen:genDecimals},
+  areaperim:{kind:'mathgen',label:'Area & Perimeter',emoji:'📐',color:'#26A69A',gen:genAreaPerim},
+  angles:{kind:'mathgen',label:'Angles',emoji:'📏',color:'#5C6BC0',gen:genAngles},
+  fracunlike:{kind:'mathgen',label:'Unlike Denominators (New!)',emoji:'🍰',color:'#7C4DFF',gen:genFracUnlike},
+  fracmultiply:{kind:'mathgen',label:'Multiplying Fractions (New!)',emoji:'✳️',color:'#9B6FE8',gen:genFracMultiply},
+  orderops:{kind:'mathgen',label:'Order of Operations (New!)',emoji:'🧮',color:'#6C3FC8',gen:genOrderOps},
+  percent:{kind:'mathgen',label:'Percentage (New!)',emoji:'💰',color:'#EC407A',gen:genPercent},
+  ratio:{kind:'mathgen',label:'Ratio (New!)',emoji:'⚖️',color:'#FF6B9D',gen:genRatio},
+  volume:{kind:'mathgen',label:'Volume (New!)',emoji:'📦',color:'#42A5A5',gen:genVolume},
+  wordprob:{kind:'trivia',label:'Word Problems',emoji:'🧩',color:'#6C3FC8',data:MATH_WORD_PROBLEMS},
+  mathtf:{kind:'truefalse',label:'True or False?',emoji:'✅',color:'#FF4757',data:MATH_TF},
+
+  // ---- Science ----
+  lifescience:{kind:'trivia',label:'Life Science',emoji:'🌱',color:'#4CAF50',data:SCIENCE_BANKS.life},
+  earthspace:{kind:'trivia',label:'Earth & Space',emoji:'🌍',color:'#5C6BC0',data:SCIENCE_BANKS.earthspace},
+  physical:{kind:'trivia',label:'Physical Science',emoji:'⚡',color:'#EF5350',data:SCIENCE_BANKS.physical},
+  lifematch:{kind:'match2',label:'Match: Life Science Terms',emoji:'🌿',color:'#4CAF50',data:SCI_MATCH_LIFE},
+  earthmatch:{kind:'match2',label:'Match: Earth Science Terms',emoji:'🪨',color:'#5C6BC0',data:SCI_MATCH_EARTH},
+  physicalmatch:{kind:'match2',label:'Match: Physical Science Terms',emoji:'🧲',color:'#EF5350',data:SCI_MATCH_PHYSICAL},
+  sciencetf:{kind:'truefalse',label:'Science: True or False?',emoji:'✅',color:'#FF4757',data:SCIENCE_TF},
+  sciencepreview:{kind:'trivia',label:'Ecosystems & Energy (New!)',emoji:'🕸️',color:'#7C4DFF',data:SCIENCE_PREVIEW},
+
+  // ---- History & Geography ----
+  ancient:{kind:'trivia',label:'Ancient Civilizations',emoji:'🏛️',color:'#C08A3E',data:HISTORY_BANKS.ancient},
+  ancientmatch:{kind:'match2',label:'Match: Ancient World',emoji:'🗿',color:'#C08A3E',data:HISTORY_MATCH},
+  colonial:{kind:'trivia',label:'Colonial America',emoji:'🗽',color:'#2C86D8',data:HISTORY_BANKS.colonial},
+  colonialmatch:{kind:'match2',label:'Match: Founders',emoji:'🎩',color:'#2C86D8',data:HISTORY_MATCH2},
+  expansion:{kind:'trivia',label:'Westward & Civil War',emoji:'🐴',color:'#8D6E63',data:HISTORY_BANKS.expansion},
+  historytf:{kind:'truefalse',label:'History: True or False',emoji:'✅',color:'#FF4757',data:HISTORY_TF},
+  geography:{kind:'trivia',label:'World Geography',emoji:'🌎',color:'#12965A',data:HISTORY_BANKS.geography},
+  geomatch:{kind:'match2',label:'Match: World Geography',emoji:'🗺️',color:'#12965A',data:HISTORY_MATCH3},
+  government:{kind:'trivia',label:'U.S. Government (New!)',emoji:'🏛️',color:'#7C4DFF',data:HISTORY_BANKS.government},
+  governmentmatch:{kind:'match2',label:'Match: Branches of Government (New!)',emoji:'⚖️',color:'#9B6FE8',data:GOV_MATCH},
+};
+
+// Each subject: 5 tiers. Tiers 1-3 = 4th grade review. Tiers 4-5 = new 5th grade material.
+const CATEGORIES={
+  reading:{label:'📖 Reading',color:'#E040A0',bg:'linear-gradient(135deg,#2FB6D6,#0E6E8E)',tiers:[
+    {title:'Word Meaning',badge:'review',games:['vocab','context','catsortR']},
+    {title:'Comprehension Basics',badge:'review',games:['mainidea','causeeffect','grammar']},
+    {title:'Word Parts & Language',badge:'review',games:['affixes','scramble','catsortR']},
+    {title:'Deeper Reading Skills',badge:'new',games:['theme','figlang','pov']},
+    {title:'Advanced Vocabulary & Inference',badge:'new',games:['idioms','comprehension','rootwords']},
+  ]},
+  math:{label:'🔢 Math',color:'#00A8FF',bg:'linear-gradient(135deg,#3FA9F5,#1E6FD0)',tiers:[
+    {title:'Whole Number Foundations',badge:'review',games:['placevalue','multdigit','division']},
+    {title:'Fractions Foundations',badge:'review',games:['fraceq','fracaddsub','factors']},
+    {title:'Decimals & Measurement',badge:'review',games:['decimals','areaperim','angles']},
+    {title:'Fractions Unlocked',badge:'new',games:['fracunlike','fracmultiply','orderops']},
+    {title:'Percent, Ratio & Volume',badge:'new',games:['percent','ratio','volume']},
+  ]},
+  science:{label:'🔬 Science',color:'#12965A',bg:'linear-gradient(135deg,#2ECC71,#12965A)',tiers:[
+    {title:'Life, Earth & Physical Science',badge:'review',games:['lifescience','earthspace','physical']},
+    {title:'Key Science Vocabulary',badge:'review',games:['lifematch','earthmatch','sciencetf']},
+    {title:'Science Review Round 2',badge:'review',games:['lifescience','physical','earthspace']},
+    {title:'Ecosystems & Energy',badge:'new',games:['sciencepreview','physicalmatch','earthspace']},
+    {title:'Mixed Challenge',badge:'new',games:['sciencetf','sciencepreview','lifescience']},
+  ]},
+  history:{label:'🏛️ History',color:'#C08A3E',bg:'linear-gradient(135deg,#E0A64E,#A6742A)',tiers:[
+    {title:'Ancient Civilizations',badge:'review',games:['ancient','ancientmatch','geography']},
+    {title:'Colonial & Revolutionary America',badge:'review',games:['colonial','colonialmatch','historytf']},
+    {title:'Westward Expansion & Civil War',badge:'review',games:['expansion','geomatch','ancient']},
+    {title:'U.S. Government & Civics',badge:'new',games:['government','governmentmatch','historytf']},
+    {title:'World Geography Review',badge:'new',games:['geography','colonial','government']},
+  ]},
+};
+
+const ARCADE_GAMES=[
+  {id:'meteor',name:'Meteor Dash',emoji:'☄️',desc:'Dodge asteroids and grab stars!',color:'#FF6B9D',unlockBy:{cat:'reading',tier:1}},
+  {id:'patternblitz',name:'Pattern Blitz',emoji:'🎯',desc:'Watch the pattern, then repeat it back. How far can you get?',color:'#00D68F',unlockBy:{cat:'math',tier:1}},
+  {id:'wordcircle',name:'Word Circle',emoji:'⭕',desc:'Drag through the letters to spell as many words as you can!',color:'#26A69A',unlockBy:{cat:'reading',tier:2}},
+  {id:'quizblitz',name:'Quiz Blitz',emoji:'⚡',desc:'60 seconds. How many can you answer?',color:'#FFD93D',unlockBy:{cat:'math',tier:2}},
+  {id:'sortrush',name:'Sort Rush',emoji:'🗃️',desc:'Sort words into the right bucket before time runs out!',color:'#FF8C00',unlockBy:{cat:'reading',tier:3}},
+  {id:'memorymatch',name:'Memory Rush',emoji:'🧠',desc:'Flip and match pairs against the clock!',color:'#00D68F',unlockBy:{cat:'science',tier:2}},
+  {id:'wordsprint',name:'Word Sprint',emoji:'🔤',desc:'Unscramble as many words as you can in 60 seconds!',color:'#9B6FE8',unlockBy:{cat:'science',tier:3}},
+  {id:'blitzmaster',name:'Blitz Master',emoji:'🏆',desc:'5th-grade-level mixed trivia. For champions.',color:'#EC407A',unlockBy:{cat:'history',tier:4}},
+];
+
+function tierComplete(cat,tierIdx){
+  const c=PROGRESS.completedGames;
+  const tier=CATEGORIES[cat].tiers[tierIdx];
+  if(!tier)return false;
+  return tier.games.every(g=>c[cat+'|'+tierIdx+'|'+g]);
+}
+function isTierUnlocked(cat,tierIdx){
+  if(tierIdx===0)return true;
+  return tierComplete(cat,tierIdx-1);
+}
+function getUnlockedArcade(){
+  const unlocked=[];
+  for(const ag of ARCADE_GAMES){
+    if(tierComplete(ag.unlockBy.cat,ag.unlockBy.tier-1))unlocked.push(ag.id);
+  }
+  return unlocked;
+}
+function render(){
+  const app=document.getElementById('app');
+  if(typeof stopArcade==='function' && S.screen!=='arcadeplay')stopArcade();
+  if(S.screen==='home')app.innerHTML=renderHome();
+  else if(S.screen==='category')app.innerHTML=renderCategory();
+  else if(S.screen==='playing')renderPlaying(app);
+  else if(S.screen==='results')app.innerHTML=renderResults();
+  else if(S.screen==='arcade')app.innerHTML=renderArcade();
+  else if(S.screen==='arcadeplay'){app.innerHTML=renderArcadePlay();setTimeout(()=>startArcade(S.arcadeId),60);}
+}
+
+function statsBar(){
+  return `<div class="statsbar">
+    <div class="statpill">⭐ ${PROGRESS.stars}</div>
+    <div class="statpill">🏆 Lv.${Math.floor(PROGRESS.xp/50)+1}</div>
+  </div>`;
+}
+
+function renderHome(){
+  const subs=['reading','math','science','history'];
+  return `<div class="screen" style="padding-top:18px;">
+    <div class="apptitle">🚀 BRAIN BLAST</div>
+    ${statsBar()}
+    <div class="g2" style="margin-top:14px;">
+      ${subs.map(s=>{
+        const cat=CATEGORIES[s];
+        return `<button class="subjbtn" style="background:${cat.bg};" data-s="${s}">
+          <div style="font-size:34px;">${cat.label.split(' ')[0]}</div>
+          <div class="subjlabel">${cat.label.split(' ').slice(1).join(' ')}</div>
+        </button>`;
+      }).join('')}
+    </div>
+    <button class="btn arcadehome" id="gotoarcade" style="margin-top:16px;">🕹️ ARCADE</button>
+  </div>`;
+}
+function bindHome(){
+  document.querySelectorAll('.subjbtn').forEach(b=>b.addEventListener('click',()=>ss({screen:'category',subject:b.dataset.s})));
+  const ga=document.getElementById('gotoarcade'); if(ga)ga.addEventListener('click',()=>ss({screen:'arcade'}));
+}
+
+function renderCategory(){
+  const cat=CATEGORIES[S.subject];
+  const c=PROGRESS.completedGames;
+  return `<div class="screen" style="padding-top:14px;">
+    <button class="backbtn" id="backhome">← HOME</button>
+    <div class="cathead" style="background:${cat.bg};">${cat.label}</div>
+    ${cat.tiers.map((tier,ti)=>{
+      const unlocked=isTierUnlocked(S.subject,ti);
+      const badge=tier.badge==='new'
+        ? `<span class="badge new">🚀 NEW FOR 5TH</span>`
+        : `<span class="badge review">⭐ 4TH GRADE REVIEW</span>`;
+      return `<div class="tierblock ${unlocked?'':'locked'}">
+        <div class="tiertitle">${unlocked?'':'🔒 '}${tier.title} ${badge}</div>
+        <div class="g3">${tier.games.map(gid=>{
+          const g=GAME_DEFS[gid];
+          const done=c[S.subject+'|'+ti+'|'+gid];
+          return `<button class="gametile" data-g="${gid}" data-t="${ti}" style="border-top:4px solid ${g.color};" ${unlocked?'':'disabled'}>
+            <div style="font-size:26px;">${g.emoji}</div>
+            <div class="gtlabel">${g.label}</div>
+            ${done?'<div class="donecheck">✅</div>':''}
+          </button>`;
+        }).join('')}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+function bindCategory(){
+  const bh=document.getElementById('backhome'); if(bh)bh.addEventListener('click',()=>ss({screen:'home'}));
+  document.querySelectorAll('.gametile').forEach(b=>{
+    if(b.disabled)return;
+    b.addEventListener('click',()=>ss({screen:'playing',tier:parseInt(b.dataset.t),gameId:b.dataset.g}));
+  });
+}
+
+function renderPlaying(app){
+  const g=GAME_DEFS[S.gameId];
+  app.innerHTML=`<div class="screen" style="padding-top:12px;">
+    <div class="playhead">
+      <button class="quitbtn" id="quitgame">✕ QUIT</button>
+      <div class="playtitle">${g.emoji} ${g.label}</div>
+    </div>
+    <div id="game-area"></div>
+  </div>`;
+  document.getElementById('quitgame').addEventListener('click',()=>ss({screen:'category'}));
+  const el=document.getElementById('game-area');
+  const onDone=(score,total)=>{
+    const passed=score>=Math.min(TROPHY_THRESHOLD,total);
+    const key=S.subject+'|'+S.tier+'|'+S.gameId;
+    if(passed && !PROGRESS.completedGames[key]){
+      PROGRESS.completedGames[key]=true;
+      PROGRESS.stars+=score;
+      PROGRESS.xp+=score*5;
+    } else {
+      PROGRESS.stars+=Math.floor(score/2);
+    }
+    saveProgress();
+    ss({screen:'results',lastScore:score,lastTotal:total,lastPassed:passed});
+  };
+  if(g.kind==='trivia')playTrivia(el,g.data,onDone);
+  else if(g.kind==='fill')playFill(el,g.data,onDone);
+  else if(g.kind==='truefalse')playTF(el,g.data,onDone);
+  else if(g.kind==='sort')playSort(el,g.data,onDone);
+  else if(g.kind==='scramble')playScramble(el,g.data,onDone);
+  else if(g.kind==='passage')playPassage(el,g.data,onDone);
+  else if(g.kind==='match2')playMatchPairs(el,g.data,onDone);
+  else if(g.kind==='mathgen')playTrivia(el,g.gen(S.tier+1),onDone);
+}
+
+function renderResults(){
+  const g=GAME_DEFS[S.gameId];
+  const pct=Math.round((S.lastScore/S.lastTotal)*100);
+  const newArcade=getUnlockedArcade().filter(id=>!PROGRESS.arcadeUnlocked.includes(id));
+  if(newArcade.length){PROGRESS.arcadeUnlocked=[...PROGRESS.arcadeUnlocked,...newArcade];saveProgress();}
+  setTimeout(fireConfetti,80);
+  return `<div class="screen" style="padding-top:40px;text-align:center;">
+    <div style="font-size:70px;">${S.lastPassed?'🏆':'💪'}</div>
+    <div class="apptitle" style="font-size:26px;">${S.lastPassed?'LEVEL COMPLETE!':'GOOD EFFORT!'}</div>
+    <div class="ps" style="font-size:24px;margin:10px 0;">⭐ ${S.lastScore} / ${S.lastTotal} (${pct}%)</div>
+    ${newArcade.length?`<div class="unlockbanner">🕹️ New arcade game unlocked: ${ARCADE_GAMES.find(a=>a.id===newArcade[0])?.name}!</div>`:''}
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+      <button class="btn bp" id="playagain">🔄 PLAY AGAIN</button>
+      <button class="btn bg2" id="backcat">🏠 BACK</button>
+    </div>
+  </div>`;
+}
+function bindResults(){
+  const pa=document.getElementById('playagain'); if(pa)pa.addEventListener('click',()=>ss({screen:'playing'}));
+  const bc=document.getElementById('backcat'); if(bc)bc.addEventListener('click',()=>ss({screen:'category'}));
+}
+
+function renderArcade(){
+  const unlocked=getUnlockedArcade();
+  return `<div class="screen" style="padding-top:14px;">
+    <button class="backbtn" id="backhome2">← HOME</button>
+    <div class="apptitle" style="font-size:24px;">🕹️ ARCADE</div>
+    <div class="g2" style="margin-top:12px;">
+      ${ARCADE_GAMES.map(a=>{
+        const un=unlocked.includes(a.id);
+        return `<button class="arcadetile" data-a="${a.id}" style="background:${un?a.color:'#ccc'};" ${un?'':'disabled'}>
+          <div style="font-size:34px;">${un?a.emoji:'🔒'}</div>
+          <div class="gtlabel" style="color:#fff;">${un?a.name:'Locked'}</div>
+          <div class="arcadedesc">${un?a.desc:'Complete Tier 1 of '+CATEGORIES[a.unlockBy.cat].label.split(' ').slice(1).join(' ')+' to unlock'}</div>
+        </button>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+function bindArcade(){
+  const bh=document.getElementById('backhome2'); if(bh)bh.addEventListener('click',()=>ss({screen:'home'}));
+  document.querySelectorAll('.arcadetile').forEach(b=>{if(b.disabled)return;b.addEventListener('click',()=>ss({screen:'arcadeplay',arcadeId:b.dataset.a}));});
+}
+
+function renderArcadePlay(){
+  const a=ARCADE_GAMES.find(x=>x.id===S.arcadeId);
+  return `<div class="screen" style="padding-top:12px;">
+    <div class="playhead">
+      <button class="quitbtn" id="quitarcade">✕ QUIT</button>
+      <div class="playtitle">${a.emoji} ${a.name}</div>
+    </div>
+    <div id="arcade-area"></div>
+  </div>`;
+}
+
+// Post-render binder — called after every render()
+const _origRender=render;
+render=function(){
+  _origRender();
+  if(S.screen==='home')bindHome();
+  else if(S.screen==='category')bindCategory();
+  else if(S.screen==='results')bindResults();
+  else if(S.screen==='arcade')bindArcade();
+  else if(S.screen==='arcadeplay'){const q=document.getElementById('quitarcade');if(q)q.addEventListener('click',()=>{stopArcade();ss({screen:'arcade'});});}
+};
+let _arcadeRaf=null, _arcadeTimer=null, _arcadeCleanup=null;
+function stopArcade(){
+  if(_arcadeRaf)cancelAnimationFrame(_arcadeRaf);
+  if(_arcadeTimer)clearInterval(_arcadeTimer);
+  if(_arcadeCleanup)try{_arcadeCleanup();}catch(e){}
+  _arcadeRaf=null;_arcadeTimer=null;_arcadeCleanup=null;
+}
+
+function startArcade(id){
+  const el=document.getElementById('arcade-area');
+  if(!el)return;
+  if(id==='meteor')startMeteorDash(el);
+  else if(id==='quizblitz')startQuizBlitz(el,false);
+  else if(id==='memorymatch')startMemoryRush(el);
+  else if(id==='blitzmaster')startQuizBlitz(el,true);
+  else if(id==='patternblitz')startPatternBlitz(el);
+  else if(id==='sortrush')startSortRush(el);
+  else if(id==='wordsprint')startWordSprint(el);
+  else if(id==='wordcircle')startWordCircle(el);
+}
+
+// ============ METEOR DASH (canvas dodge/collect) ============
+function startMeteorDash(el){
+  el.innerHTML=`<div class="arcadewrap"><canvas id="meteor-canvas" width="380" height="520"></canvas></div>`;
+  const canvas=document.getElementById('meteor-canvas');
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  let player={x:W/2,targetX:W/2,y:H-50,w:34,h:34};
+  let rocks=[],stars=[],particles=[];
+  let lives=3,score=0,frame=0,over=false,spawnTimer=0,starTimer=0,speed=3.2;
+
+  function spawnRock(){rocks.push({x:ri(20,W-20),y:-20,w:ri(26,42),vy:speed+Math.random()*1.5});}
+  function spawnStar(){stars.push({x:ri(20,W-20),y:-20,r:10,vy:speed*0.9});}
+
+  function loop(){
+    frame++;
+    ctx.fillStyle='#0A0E2E'; ctx.fillRect(0,0,W,H);
+    // starfield bg
+    for(let i=0;i<30;i++){const sx=(i*53+frame*0.5)%W, sy=(i*97)%H; ctx.fillStyle='rgba(255,255,255,.25)';ctx.fillRect(sx,sy,2,2);}
+
+    player.x+=(player.targetX-player.x)*0.18;
+    player.x=Math.max(20,Math.min(W-20,player.x));
+
+    spawnTimer--; if(spawnTimer<=0){spawnRock();spawnTimer=Math.max(22,42-Math.floor(frame/200));}
+    starTimer--; if(starTimer<=0){spawnStar();starTimer=ri(40,80);}
+
+    rocks.forEach(r=>r.y+=r.vy); rocks=rocks.filter(r=>r.y<H+40);
+    stars.forEach(s=>s.y+=s.vy); stars=stars.filter(s=>s.y<H+40);
+
+    // draw rocks
+    ctx.font='28px serif';
+    rocks.forEach(r=>{ctx.fillText('☄️',r.x-14,r.y+10);});
+    stars.forEach(s=>{ctx.fillText('⭐',s.x-12,s.y+10);});
+
+    // draw player (rocket)
+    ctx.font='30px serif';
+    ctx.fillText('🚀',player.x-15,player.y+12);
+
+    // collisions
+    rocks.forEach(r=>{
+      const dx=r.x-player.x, dy=r.y-player.y;
+      if(Math.abs(dx)<24 && Math.abs(dy)<24){
+        lives--; rocks=rocks.filter(x=>x!==r);
+        if(lives<=0){over=true;}
+      }
+    });
+    stars.forEach(s=>{
+      const dx=s.x-player.x, dy=s.y-player.y;
+      if(Math.abs(dx)<22 && Math.abs(dy)<22){
+        score++; stars=stars.filter(x=>x!==s);
+      }
+    });
+
+    // HUD
+    ctx.fillStyle='#fff'; ctx.font='bold 16px sans-serif';
+    ctx.fillText('⭐ '+score,10,26);
+    ctx.fillText('❤️'.repeat(Math.max(0,lives)),W-70,26);
+
+    if(over){
+      ctx.fillStyle='rgba(0,0,0,.65)'; ctx.fillRect(0,0,W,H);
+      ctx.fillStyle='#fff'; ctx.font='bold 26px sans-serif'; ctx.textAlign='center';
+      ctx.fillText('GAME OVER',W/2,H/2-20);
+      ctx.font='bold 20px sans-serif';
+      ctx.fillText('⭐ Score: '+score,W/2,H/2+16);
+      ctx.font='16px sans-serif';
+      ctx.fillText('Tap to play again',W/2,H/2+50);
+      ctx.textAlign='left';
+      PROGRESS.stars+=score; saveProgress();
+      canvas.addEventListener('click',()=>startMeteorDash(el),{once:true});
+      return;
+    }
+    _arcadeRaf=requestAnimationFrame(loop);
+  }
+  function move(clientX){
+    const rect=canvas.getBoundingClientRect();
+    player.targetX=(clientX-rect.left)*(W/rect.width);
+  }
+  const onMove=e=>{const cx=e.touches?e.touches[0].clientX:e.clientX; move(cx);};
+  canvas.addEventListener('mousemove',onMove);
+  canvas.addEventListener('touchmove',e=>{e.preventDefault();onMove(e);},{passive:false});
+  canvas.addEventListener('touchstart',e=>{onMove(e);},{passive:false});
+  _arcadeCleanup=()=>{canvas.removeEventListener('mousemove',onMove);};
+  loop();
+}
+
+// ============ QUIZ BLITZ (timed trivia sprint) ============
+function allTriviaPool(){
+  let pool=[];
+  Object.values(GAME_DEFS).forEach(g=>{
+    if(g.kind==='trivia')pool=pool.concat(g.data);
+  });
+  return pool;
+}
+function startQuizBlitz(el,hard){
+  const pool=sh(allTriviaPool());
+  let timeLeft=hard?45:60, score=0, idx=0, chosen=null, ended=false;
+  function nextQ(){
+    if(idx>=pool.length)idx=0;
+    return pool[idx++];
+  }
+  let cur=nextQ();
+  function draw(){
+    if(ended)return;
+    const choices=sh([cur.a,...(cur.c||[]).filter(x=>x!==cur.a)]).slice(0,4);
+    el.innerHTML=`<div class="card">
+      <div class="blitzbar"><div class="ps">⭐ ${score}</div><div class="timerpill">⏱ ${timeLeft}s</div></div>
+      <div class="qtext">${esc(cur.q)}</div>
+      <div class="g2">${choices.map(c=>`<button class="mc ab" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+    </div>`;
+    el.querySelectorAll('.mc').forEach(b=>b.addEventListener('click',()=>{
+      if(b.dataset.c===cur.a){score++;playOK();}else{playNo();}
+      cur=nextQ(); draw();
+    }));
+  }
+  _arcadeTimer=setInterval(()=>{
+    timeLeft--;
+    if(timeLeft<=0){
+      ended=true; clearInterval(_arcadeTimer);
+      PROGRESS.stars+=score; saveProgress();
+      el.innerHTML=`<div class="card" style="text-align:center;">
+        <div style="font-size:60px;">🏆</div>
+        <div class="apptitle" style="font-size:22px;">TIME'S UP!</div>
+        <div class="ps" style="font-size:24px;margin:10px 0;">⭐ Final Score: ${score}</div>
+        <button class="btn bp" id="blitzagain">🔄 PLAY AGAIN</button>
+      </div>`;
+      const ba=document.getElementById('blitzagain'); if(ba)ba.addEventListener('click',()=>startQuizBlitz(el,hard));
+      return;
+    }
+    draw();
+  },1000);
+  draw();
+}
+
+// ============ MEMORY RUSH (timed match) ============
+function startMemoryRush(el){
+  const allPairs=[...VOCAB.slice(0,8).map(v=>({a:v.w,b:v.d})),...HISTORY_MATCH,...HISTORY_MATCH2];
+  const pairs=pk(allPairs,8);
+  let cards=[]; pairs.forEach((p,i)=>{cards.push({id:i+'a',t:p.a,pair:i,found:false});cards.push({id:i+'b',t:p.b,pair:i,found:false});});
+  cards=sh(cards);
+  let flipped=[],lock=false,found=0,timeLeft=60,ended=false;
+  function draw(){
+    if(ended)return;
+    el.innerHTML=`<div class="card">
+      <div class="blitzbar"><div class="ps">Pairs: ${found}/${pairs.length}</div><div class="timerpill">⏱ ${timeLeft}s</div></div>
+      <div class="matchgrid small">${cards.map(c=>{
+        const isF=flipped.includes(c.id)||c.found;
+        return `<button class="matchcard ${isF?'flip':''} ${c.found?'found':''}" data-id="${c.id}">${isF?esc(c.t):'❓'}</button>`;
+      }).join('')}</div>
+    </div>`;
+    el.querySelectorAll('.matchcard').forEach(b=>b.addEventListener('click',()=>{
+      if(lock||ended)return;
+      const c=cards.find(x=>x.id===b.dataset.id);
+      if(c.found||flipped.includes(c.id))return;
+      flipped.push(c.id); draw();
+      if(flipped.length===2){
+        lock=true;
+        const [c1,c2]=flipped.map(id=>cards.find(x=>x.id===id));
+        if(c1.pair===c2.pair){c1.found=true;c2.found=true;found++;playOK();
+          setTimeout(()=>{flipped=[];lock=false;draw();
+            if(found===pairs.length)finish(true);
+          },450);
+        } else {playNo();setTimeout(()=>{flipped=[];lock=false;draw();},800);}
+      }
+    }));
+  }
+  function finish(won){
+    ended=true; clearInterval(_arcadeTimer);
+    const scoreVal=found*10+(won?timeLeft*2:0);
+    PROGRESS.stars+=scoreVal; saveProgress();
+    el.innerHTML=`<div class="card" style="text-align:center;">
+      <div style="font-size:60px;">${won?'🏆':'⏰'}</div>
+      <div class="apptitle" style="font-size:22px;">${won?'ALL MATCHED!':"TIME'S UP!"}</div>
+      <div class="ps" style="font-size:22px;margin:10px 0;">⭐ Score: ${scoreVal}</div>
+      <button class="btn bp" id="memagain">🔄 PLAY AGAIN</button>
+    </div>`;
+    const ma=document.getElementById('memagain'); if(ma)ma.addEventListener('click',()=>startMemoryRush(el));
+  }
+  _arcadeTimer=setInterval(()=>{timeLeft--; if(timeLeft<=0){finish(false);}else{draw();}},1000);
+  draw();
+}
+
+// ============ PATTERN BLITZ (Simon-says memory) ============
+function startPatternBlitz(el){
+  const TILES=[{id:0,emoji:'🔴',color:'#FF4757'},{id:1,emoji:'🔵',color:'#00A8FF'},{id:2,emoji:'🟡',color:'#FFD93D'},{id:3,emoji:'🟢',color:'#00D68F'}];
+  let sequence=[],userIdx=0,level=0,showing=true,ended=false,activeTile=null;
+  function draw(){
+    if(ended)return;
+    el.innerHTML=`<div class="card" style="text-align:center;">
+      <div class="qtext" style="margin-bottom:10px;">${showing?'Watch closely...':'Your turn! Repeat the pattern.'}</div>
+      <div class="ps" style="margin-bottom:10px;">Round: ${level}</div>
+      <div class="patterngrid">${TILES.map(t=>`<button class="patterntile" data-id="${t.id}" style="background:${activeTile===t.id?'#fff':t.color};opacity:${activeTile===t.id?1:.85};" ${showing?'disabled':''}>${t.emoji}</button>`).join('')}</div>
+    </div>`;
+    if(!showing){
+      el.querySelectorAll('.patterntile').forEach(b=>b.addEventListener('click',()=>{
+        if(showing||ended)return;
+        const id=parseInt(b.dataset.id);
+        flashTile(id);
+        if(id===sequence[userIdx]){
+          userIdx++;
+          if(userIdx===sequence.length){playOK();level++;setTimeout(nextRound,600);}
+        } else {playNo();finish();}
+      }));
+    }
+  }
+  function flashTile(id){activeTile=id;draw();setTimeout(()=>{activeTile=null;if(!ended)draw();},250);}
+  function playSequence(){
+    showing=true;draw();
+    let i=0;
+    function step(){
+      if(ended)return;
+      if(i>=sequence.length){showing=false;userIdx=0;draw();return;}
+      activeTile=sequence[i];draw();
+      setTimeout(()=>{activeTile=null;draw();setTimeout(()=>{i++;step();},180);},480);
+    }
+    setTimeout(step,500);
+  }
+  function nextRound(){sequence.push(ri(0,3));playSequence();}
+  function finish(){
+    ended=true;
+    PROGRESS.stars+=level;saveProgress();
+    el.innerHTML=`<div class="card" style="text-align:center;">
+      <div style="font-size:60px;">🎯</div>
+      <div class="apptitle" style="font-size:22px;">GAME OVER</div>
+      <div class="ps" style="font-size:22px;margin:10px 0;">You reached round ${level}!</div>
+      <button class="btn bp" id="patternagain">🔄 PLAY AGAIN</button>
+    </div>`;
+    const pa=document.getElementById('patternagain'); if(pa)pa.addEventListener('click',()=>startPatternBlitz(el));
+  }
+  _arcadeCleanup=()=>{ended=true;};
+  nextRound();
+}
+
+// ============ SORT RUSH (timed 2-bucket sorting) ============
+function startSortRush(el){
+  let timeLeft=45,score=0,ended=false,queue=[];
+  function refillQueue(){
+    const round=rnd(CATSORT_READING);
+    const items=[...round.wordsA.map(w=>({word:w,correct:'A',catA:round.categoryA,catB:round.categoryB})),...round.wordsB.map(w=>({word:w,correct:'B',catA:round.categoryA,catB:round.categoryB}))];
+    queue=queue.concat(sh(items));
+  }
+  refillQueue();
+  let cur=queue.shift();
+  function draw(){
+    if(ended)return;
+    el.innerHTML=`<div class="card">
+      <div class="blitzbar"><div class="ps">⭐ ${score}</div><div class="timerpill">⏱ ${timeLeft}s</div></div>
+      <div class="qtext" style="font-size:22px;">${esc(cur.word)}</div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn bp sortbtn" data-b="A" style="flex:1;font-size:13px;padding:18px 6px;">${esc(cur.catA)}</button>
+        <button class="btn bg2 sortbtn" data-b="B" style="flex:1;font-size:13px;padding:18px 6px;">${esc(cur.catB)}</button>
+      </div>
+    </div>`;
+    el.querySelectorAll('.sortbtn').forEach(b=>b.addEventListener('click',()=>{
+      if(ended)return;
+      const ok=b.dataset.b===cur.correct;
+      ok?(score++,playOK()):playNo();
+      if(queue.length===0)refillQueue();
+      cur=queue.shift();
+      draw();
+    }));
+  }
+  _arcadeTimer=setInterval(()=>{
+    timeLeft--;
+    if(timeLeft<=0){
+      ended=true;clearInterval(_arcadeTimer);
+      PROGRESS.stars+=score;saveProgress();
+      el.innerHTML=`<div class="card" style="text-align:center;">
+        <div style="font-size:60px;">🗃️</div>
+        <div class="apptitle" style="font-size:22px;">TIME'S UP!</div>
+        <div class="ps" style="font-size:22px;margin:10px 0;">⭐ Sorted: ${score}</div>
+        <button class="btn bp" id="sortagain">🔄 PLAY AGAIN</button>
+      </div>`;
+      const sa=document.getElementById('sortagain'); if(sa)sa.addEventListener('click',()=>startSortRush(el));
+      return;
+    }
+    draw();
+  },1000);
+  draw();
+}
+
+// ============ WORD SPRINT (timed unscramble) ============
+function startWordSprint(el){
+  let timeLeft=60,score=0,ended=false;
+  let pool=sh(SCRAMBLE_WORDS),idx=0;
+  function nextWord(){ if(idx>=pool.length){pool=sh(SCRAMBLE_WORDS);idx=0;} return pool[idx++]; }
+  function makeScramble(word){let a=word.split('');for(let k=0;k<3;k++)a=sh(a);return a.join('');}
+  let cur=nextWord();
+  let letters=makeScramble(cur.word).split('').map((c,j)=>({c,used:false,id:j}));
+  let chosen=[];
+  function draw(){
+    if(ended)return;
+    el.innerHTML=`<div class="card">
+      <div class="blitzbar"><div class="ps">⭐ ${score}</div><div class="timerpill">⏱ ${timeLeft}s</div></div>
+      <div class="qtext" style="margin-bottom:10px;">💡 ${esc(cur.hint)}</div>
+      <div class="scram-slots">${chosen.map(l=>`<div class="tile filled">${l.c.toUpperCase()}</div>`).join('')}${Array.from({length:cur.word.length-chosen.length}).map(()=>`<div class="tile empty"></div>`).join('')}</div>
+      <div class="scram-pool">${letters.map(l=>`<button class="tile pool" data-id="${l.id}" style="${l.used?'visibility:hidden;':''}">${l.c.toUpperCase()}</button>`).join('')}</div>
+      <button class="btn bg2 skipbtn" style="margin-top:10px;">⏭️ Skip</button>
+    </div>`;
+    el.querySelectorAll('.pool').forEach(b=>b.addEventListener('click',()=>{
+      if(ended)return;
+      const l=letters.find(x=>x.id==b.dataset.id);
+      if(l.used)return;
+      l.used=true; chosen.push(l); draw();
+      if(chosen.length===cur.word.length){
+        const ans=chosen.map(x=>x.c).join('').toLowerCase();
+        (ans===cur.word.toLowerCase())?(score++,playOK()):playNo();
+        setTimeout(advance,400);
+      }
+    }));
+    const skip=el.querySelector('.skipbtn');
+    if(skip)skip.addEventListener('click',advance);
+  }
+  function advance(){
+    if(ended)return;
+    cur=nextWord();
+    letters=makeScramble(cur.word).split('').map((c,j)=>({c,used:false,id:j}));
+    chosen=[];
+    draw();
+  }
+  _arcadeTimer=setInterval(()=>{
+    timeLeft--;
+    if(timeLeft<=0){
+      ended=true;clearInterval(_arcadeTimer);
+      PROGRESS.stars+=score*2;saveProgress();
+      el.innerHTML=`<div class="card" style="text-align:center;">
+        <div style="font-size:60px;">🔤</div>
+        <div class="apptitle" style="font-size:22px;">TIME'S UP!</div>
+        <div class="ps" style="font-size:22px;margin:10px 0;">⭐ Words Solved: ${score}</div>
+        <button class="btn bp" id="sprintagain">🔄 PLAY AGAIN</button>
+      </div>`;
+      const sa=document.getElementById('sprintagain'); if(sa)sa.addEventListener('click',()=>startWordSprint(el));
+      return;
+    }
+    draw();
+  },1000);
+  draw();
+}
+
+// ============ WORD CIRCLE (drag through letters to spell words) ============
+const WORD_CIRCLE_PUZZLES=[
+  {letters:['R','E','L','P','A','S','T'],pangram:'PLASTER',words:[
+    'ART','RAT','TAR','EAT','ATE','TEA','SEA','SET','LET','PET','PEA','PAL','LAP','RAP','PAR','EAR','ERA','ARE',
+    'TALE','TEAL','LATE','LEAP','PEAL','PLEA','REAL','SEAL','SEAT','EAST','EATS','RATE','TEAR','TARP','TRAP','PART','RAPT','STAR','RATS','ARTS','TARS','PEST','PETS','STEP','SLAP','ALPS','PALS','LAPS',
+    'PEARL','PLEAT','PLATE','STEAL','STALE','PASTE','LEAST','PLEAS',
+    'PEARLS','PLATES','PETALS','PALEST','PASTEL','STAPLE',
+    'PLASTER']},
+  {letters:['P','L','A','N','E','T','S'],pangram:'PLANETS',words:[
+    'ANT','ATE','EAT','TEA','SEA','SET','LET','NET','PET','PEA','PAL','LAP','TAN','TAP','PAN','NAP','ALE','APT','SAT',
+    'PLAN','SNAP','SPAN','SPAT','SLAP','STEP','LEAN','LEAP','NEAT','ANTE','LATE','TALE','TEAL','SEAT','EAST','EATS','NEST','TENS','PENS','PLEA',
+    'PLANE','PLANT','SLANT','STEAL','PLATE','PLEAT','LEAST','PANTS','PASTE',
+    'PASTEL','STAPLE',
+    'PLANETS']},
+  {letters:['C','A','P','T','U','R','E'],pangram:'CAPTURE',words:[
+    'CAT','CAP','CAR','ART','RAT','TAR','CUP','CUT','CUR','RUT','EAT','ATE','TEA','EAR','ERA','ARE','APT','RAP','PAR','PAT','TAP',
+    'PACE','RACE','CARE','CURT','CURE','CAPE','TAPE','REAP','PEAR','PEAT','RATE','TEAR','TRAP','PART','CART','TRUE','CUTE',
+    'CRATE','TRACE','CATER','REACT',
+    'CARPET',
+    'CAPTURE']},
+];
+
+function startWordCircle(el){
+  const puzzle=rnd(WORD_CIRCLE_PUZZLES);
+  const letters=sh(puzzle.letters);
+  const n=letters.length;
+  const positions=letters.map((_,i)=>{
+    const angle=(i/n)*2*Math.PI-Math.PI/2;
+    return {x:50+Math.cos(angle)*38,y:50+Math.sin(angle)*38};
+  });
+  let found=[],current=[],timeLeft=90,ended=false,dragging=false,flashState=null;
+
+  function wordScore(w){if(w.length>=7)return 14;if(w.length===6)return 6;if(w.length===5)return 5;if(w.length===4)return 2;return 1;}
+  function totalScore(){return found.reduce((s,w)=>s+wordScore(w),0);}
+
+  function draw(){
+    if(ended)return;
+    const word=current.map(i=>letters[i]).join('');
+    el.innerHTML=`<div class="card">
+      <div class="blitzbar"><div class="ps">⭐ ${totalScore()}</div><div class="timerpill">⏱ ${timeLeft}s</div></div>
+      <div class="wc-word ${flashState||''}">${word||'&nbsp;'}</div>
+      <div class="wc-circle" id="wc-circle">
+        ${letters.map((L,i)=>`<div class="wc-letter ${current.includes(i)?'active':''}" data-i="${i}" style="left:${positions[i].x}%;top:${positions[i].y}%;">${L}</div>`).join('')}
+      </div>
+      <div class="wc-found">Found ${found.length} word${found.length===1?'':'s'}${found.includes(puzzle.pangram)?' · 🌟 Pangram!':''}</div>
+      <button class="btn bg2 wc-clear" style="margin-top:8px;">✖ Clear</button>
+    </div>`;
+    wireEvents();
+  }
+
+  function wireEvents(){
+    const circle=document.getElementById('wc-circle');
+    if(!circle)return;
+    function letterAt(x,y){
+      const elAt=document.elementFromPoint(x,y);
+      if(elAt&&elAt.classList&&elAt.classList.contains('wc-letter'))return parseInt(elAt.dataset.i);
+      return null;
+    }
+    function startDrag(x,y){
+      dragging=true;current=[];flashState=null;
+      const idx=letterAt(x,y);
+      if(idx!==null)current.push(idx);
+      draw();
+    }
+    function moveDrag(x,y){
+      if(!dragging)return;
+      const idx=letterAt(x,y);
+      if(idx!==null&&!current.includes(idx)){current.push(idx);draw();}
+    }
+    function endDrag(){
+      if(!dragging)return;
+      dragging=false;
+      submitWord();
+    }
+    circle.querySelectorAll('.wc-letter').forEach(elL=>{
+      elL.addEventListener('pointerdown',e=>{e.preventDefault();startDrag(e.clientX,e.clientY);});
+      elL.addEventListener('click',()=>{
+        if(dragging)return;
+        const idx=parseInt(elL.dataset.i);
+        if(!current.includes(idx)){current.push(idx);draw();}
+      });
+    });
+    circle.addEventListener('pointermove',e=>{if(dragging){e.preventDefault();moveDrag(e.clientX,e.clientY);}});
+    circle.addEventListener('pointerup',()=>endDrag());
+    circle.addEventListener('pointerleave',()=>{if(dragging)endDrag();});
+    const clearBtn=el.querySelector('.wc-clear');
+    if(clearBtn)clearBtn.addEventListener('click',()=>{current=[];flashState=null;draw();});
+  }
+
+  function submitWord(){
+    const word=current.map(i=>letters[i]).join('').toUpperCase();
+    if(word.length>=3&&puzzle.words.includes(word)&&!found.includes(word)){
+      found.push(word);playOK();flashState='ok';
+    } else if(found.includes(word)&&word.length>=3){
+      flashState='dupe';
+    } else if(word.length>0){
+      flashState='no';playNo();
+    }
+    current=[];
+    draw();
+    setTimeout(()=>{if(!ended){flashState=null;draw();}},500);
+  }
+
+  _arcadeTimer=setInterval(()=>{
+    timeLeft--;
+    if(timeLeft<=0){
+      ended=true;clearInterval(_arcadeTimer);
+      const finalScore=totalScore();
+      PROGRESS.stars+=finalScore;saveProgress();
+      el.innerHTML=`<div class="card" style="text-align:center;">
+        <div style="font-size:60px;">⭕</div>
+        <div class="apptitle" style="font-size:22px;">TIME'S UP!</div>
+        <div class="ps" style="font-size:22px;margin:10px 0;">⭐ Score: ${finalScore}</div>
+        <div style="font-family:'Nunito',sans-serif;font-weight:800;color:#5A4A8A;margin-bottom:14px;font-size:13px;">You found ${found.length} word${found.length===1?'':'s'}: ${found.join(', ')||'—'}</div>
+        <button class="btn bp" id="wcagain">🔄 PLAY AGAIN</button>
+      </div>`;
+      const wa=document.getElementById('wcagain'); if(wa)wa.addEventListener('click',()=>startWordCircle(el));
+      return;
+    }
+    if(!dragging)draw();
+  },1000);
+  draw();
+}
+
+// ============ INIT ============
+window.S=S; window.PROGRESS=PROGRESS; window.ss=ss; window.render=render;
+window.GAME_DEFS=GAME_DEFS; window.CATEGORIES=CATEGORIES; window.ARCADE_GAMES=ARCADE_GAMES;
+window.startArcade=startArcade; window.stopArcade=stopArcade;
+window.WORD_CIRCLE_PUZZLES=WORD_CIRCLE_PUZZLES;
+loadProgress();
+render();
+</script>
+</body>
+</html>
